@@ -26,14 +26,21 @@ export default class FontSizeInlineTool implements InlineTool {
     }
     private selectionList = undefined;
     private buttonWrapperText = undefined;
+    private isOptionClicked = false;
     public render(): HTMLElement {
         this.createButton();
-        this.nodes.button.addEventListener('click', (event) => {
-            if(this.isDropDownOpen) {
-                event.stopPropagation();
+        this.nodes.button.addEventListener('click', ($event) => {
+            console.log($event.target);
+            if(!this.isDropDownOpen && $event.target.id === 'font-size-dropdown') {
+                this.addFontSizeOptions();
+                this.isDropDownOpen = true;
             }
-            this.isDropDownOpen = true;
-            this.addFontSizeOptions();
+            else {
+                this.isOptionClicked = false;
+            }
+            // event.preventDefault();
+            // event.stopPropagation();
+            // return false;
         });
         return this.nodes.button;
     }
@@ -48,6 +55,7 @@ export default class FontSizeInlineTool implements InlineTool {
         this.buttonWrapperText = document.createElement('div');
         this.buttonWrapperText.classList.add('button-wrapper-text');
         const displaySelectedFontSize = document.createElement('div');
+        displaySelectedFontSize.setAttribute('id', 'font-size-dropdown')
         displaySelectedFontSize.innerHTML = '&nbsp;&nbsp';
         $.append(this.buttonWrapperText, displaySelectedFontSize);
         $.append(this.nodes.button, this.buttonWrapperText);
@@ -61,9 +69,9 @@ export default class FontSizeInlineTool implements InlineTool {
         for(const value of values) {
             const option = document.createElement('div');
             option.setAttribute('value', value);
-            option.setAttribute('class', 'selection-list-option');
+            option.classList.add('selection-list-option');
             if(this.selectedFontSize === value){
-                option.setAttribute('class', 'selection-list-option-active');
+            option.classList.add('selection-list-option-active');
             }
             option.innerHTML = value;
             $.append(selectionListWrapper, option);
@@ -73,14 +81,14 @@ export default class FontSizeInlineTool implements InlineTool {
         this.selectionList.addEventListener('click', (event) => {
             console.log(event.target);
             this.selectedFontSize = event.target.innerHTML;
-            this.removeFontSizeOptions(event);
+            this.removeFontSizeOptions();
+            this.isOptionClicked = true;
         });
     };
-    public removeFontSizeOptions($event) {
-        this.selectionList.remove();
+    public removeFontSizeOptions() {
         this.isDropDownOpen = false;
-        // $event.stopPropagation();
-
+        this.selectionList.remove();
+        // this.selectionList.classList.add('selection-list-render');
     }
     public surround(range: Range): void {
         if(this.selectedFontSize) {
@@ -102,7 +110,8 @@ export default class FontSizeInlineTool implements InlineTool {
         // const computedFontSize= window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
         // this.selectedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
         // this.replaceFontSizeInWrapper(this.selectedFontSize);
-        return isActive;
+    //     return isActive;
+        return false;
     }
     public replaceFontSizeInWrapper(size) {
         const displaySelectedFontSize = document.createElement('div');
