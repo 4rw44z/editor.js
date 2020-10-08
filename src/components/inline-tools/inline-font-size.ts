@@ -26,28 +26,11 @@ export default class FontSizeInlineTool implements InlineTool {
     }
     private selectionList = undefined;
     private buttonWrapperText = undefined;
-    private isOptionClicked = false;
-    public render(): HTMLElement {
-        this.createButton();
-        this.nodes.button.addEventListener('click', ($event) => {
-            console.log($event.target);
-            if(!this.isDropDownOpen && $event.target.id === 'font-size-dropdown') {
-                this.addFontSizeOptions();
-                this.isDropDownOpen = true;
-            }
-            else {
-                this.isOptionClicked = false;
-            }
-            // event.preventDefault();
-            // event.stopPropagation();
-            // return false;
-        });
-        return this.nodes.button;
-    }
     createButton() {
         this.nodes.button = document.createElement('button') as HTMLButtonElement;
         this.nodes.button.type = 'button';
         this.nodes.button.classList.add(this.CSS.button, this.CSS.buttonModifier);
+        this.nodes.button.setAttribute('id', 'font-size-btn');
         this.getFontSizeForButton();
         this.nodes.button.appendChild($.svg('toggler-down', 13, 13));
     }
@@ -79,16 +62,24 @@ export default class FontSizeInlineTool implements InlineTool {
         $.append(this.selectionList, selectionListWrapper);
         $.append(this.nodes.button, this.selectionList);
         this.selectionList.addEventListener('click', (event) => {
-            console.log(event.target);
             this.selectedFontSize = event.target.innerHTML;
             this.removeFontSizeOptions();
-            this.isOptionClicked = true;
         });
     };
     public removeFontSizeOptions() {
         this.isDropDownOpen = false;
         this.selectionList.remove();
-        // this.selectionList.classList.add('selection-list-render');
+    }
+    public render(): HTMLElement {
+        this.createButton();
+        this.nodes.button.addEventListener('click', ($event) => {
+            console.log($event);
+            if(!this.isDropDownOpen && ((<HTMLElement>$event.target).id === 'font-size-dropdown'|| (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id) === 'font-size-btn') {
+                this.addFontSizeOptions();
+                this.isDropDownOpen = true;
+            }
+        });
+        return this.nodes.button;
     }
     public surround(range: Range): void {
         if(this.selectedFontSize) {
@@ -106,17 +97,15 @@ export default class FontSizeInlineTool implements InlineTool {
     }
 
     public checkState(selection: Selection){
-        const isActive = document.queryCommandState(this.commandName);
-        // const computedFontSize= window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
-        // this.selectedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
-        // this.replaceFontSizeInWrapper(this.selectedFontSize);
-    //     return isActive;
-        return false;
+        const isActive =  document.queryCommandState(this.commandName);
+        const computedFontSize= window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
+        this.selectedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
+        this.replaceFontSizeInWrapper(this.selectedFontSize);
+        return isActive;
     }
     public replaceFontSizeInWrapper(size) {
-        const displaySelectedFontSize = document.createElement('div');
+        const displaySelectedFontSize = document.getElementById('font-size-dropdown')
         displaySelectedFontSize.innerHTML = size;
-        this.buttonWrapperText.replaceChild(displaySelectedFontSize, this.buttonWrapperText.childNodes[0]);
     }
 
 }

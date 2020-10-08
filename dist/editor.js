@@ -14583,37 +14583,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       };
       this.selectionList = undefined;
       this.buttonWrapperText = undefined;
-      this.isOptionClicked = false;
     }
 
     (0, _createClass2["default"])(FontSizeInlineTool, [{
-      key: "render",
-      value: function render() {
-        var _this = this;
-
-        this.createButton();
-        this.nodes.button.addEventListener('click', function ($event) {
-          console.log($event.target);
-
-          if (!_this.isDropDownOpen && $event.target.id === 'font-size-dropdown') {
-            _this.addFontSizeOptions();
-
-            _this.isDropDownOpen = true;
-          } else {
-            _this.isOptionClicked = false;
-          } // event.preventDefault();
-          // event.stopPropagation();
-          // return false;
-
-        });
-        return this.nodes.button;
-      }
-    }, {
       key: "createButton",
       value: function createButton() {
         this.nodes.button = document.createElement('button');
         this.nodes.button.type = 'button';
         this.nodes.button.classList.add(this.CSS.button, this.CSS.buttonModifier);
+        this.nodes.button.setAttribute('id', 'font-size-btn');
         this.getFontSizeForButton();
         this.nodes.button.appendChild(_dom["default"].svg('toggler-down', 13, 13));
       }
@@ -14633,7 +14611,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "addFontSizeOptions",
       value: function addFontSizeOptions() {
-        var _this2 = this;
+        var _this = this;
 
         var values = ['8', '9', '10', '11', '12', '14', '18', '24', '30', '36', '48', '60', '72', '96'];
         this.selectionList = document.createElement('div');
@@ -14661,19 +14639,33 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         _dom["default"].append(this.nodes.button, this.selectionList);
 
         this.selectionList.addEventListener('click', function (event) {
-          console.log(event.target);
-          _this2.selectedFontSize = event.target.innerHTML;
+          _this.selectedFontSize = event.target.innerHTML;
 
-          _this2.removeFontSizeOptions();
-
-          _this2.isOptionClicked = true;
+          _this.removeFontSizeOptions();
         });
       }
     }, {
       key: "removeFontSizeOptions",
       value: function removeFontSizeOptions() {
         this.isDropDownOpen = false;
-        this.selectionList.remove(); // this.selectionList.classList.add('selection-list-render');
+        this.selectionList.remove();
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        this.createButton();
+        this.nodes.button.addEventListener('click', function ($event) {
+          console.log($event);
+
+          if (!_this2.isDropDownOpen && ($event.target.id === 'font-size-dropdown' || $event.target.parentNode.id) === 'font-size-btn') {
+            _this2.addFontSizeOptions();
+
+            _this2.isDropDownOpen = true;
+          }
+        });
+        return this.nodes.button;
       }
     }, {
       key: "surround",
@@ -14698,19 +14690,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "checkState",
       value: function checkState(selection) {
-        var isActive = document.queryCommandState(this.commandName); // const computedFontSize= window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
-        // this.selectedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
-        // this.replaceFontSizeInWrapper(this.selectedFontSize);
-        //     return isActive;
-
-        return false;
+        var isActive = document.queryCommandState(this.commandName);
+        var computedFontSize = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
+        this.selectedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
+        this.replaceFontSizeInWrapper(this.selectedFontSize);
+        return isActive;
       }
     }, {
       key: "replaceFontSizeInWrapper",
       value: function replaceFontSizeInWrapper(size) {
-        var displaySelectedFontSize = document.createElement('div');
+        var displaySelectedFontSize = document.getElementById('font-size-dropdown');
         displaySelectedFontSize.innerHTML = size;
-        this.buttonWrapperText.replaceChild(displaySelectedFontSize, this.buttonWrapperText.childNodes[0]);
       }
     }], [{
       key: "sanitize",
