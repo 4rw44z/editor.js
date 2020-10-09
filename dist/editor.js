@@ -14687,6 +14687,183 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 /***/ }),
 
+/***/ "./src/components/inline-tools/inline-tool-font-family.ts":
+/*!****************************************************************!*\
+  !*** ./src/components/inline-tools/inline-tool-font-family.ts ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js"), __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js"), __webpack_require__(/*! ../dom */ "./src/components/dom.ts")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+  } else { var mod; }
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _classCallCheck2, _createClass2, _dom) {
+  "use strict";
+
+  var _interopRequireDefault = __webpack_require__(/*! @babel/runtime/helpers/interopRequireDefault */ "./node_modules/@babel/runtime/helpers/interopRequireDefault.js");
+
+  Object.defineProperty(_exports, "__esModule", {
+    value: true
+  });
+  _exports["default"] = void 0;
+  _classCallCheck2 = _interopRequireDefault(_classCallCheck2);
+  _createClass2 = _interopRequireDefault(_createClass2);
+  _dom = _interopRequireDefault(_dom);
+
+  var FontFamilyTool = /*#__PURE__*/function () {
+    function FontFamilyTool() {
+      (0, _classCallCheck2["default"])(this, FontFamilyTool);
+      this.isDropDownOpen = false;
+      this.commandName = 'insertHtml';
+      this.CSS = {
+        button: 'ce-inline-tool',
+        buttonActive: 'ce-font-family-tool--active',
+        buttonModifier: 'ce-inline-tool--font'
+      };
+      this.selectedFontFamily = null;
+      this.nodes = {
+        button: undefined
+      };
+      this.selectionList = undefined;
+      this.buttonWrapperText = undefined;
+    }
+
+    (0, _createClass2["default"])(FontFamilyTool, [{
+      key: "createButton",
+      value: function createButton() {
+        this.nodes.button = document.createElement('button');
+        this.nodes.button.type = 'button';
+        this.nodes.button.classList.add(this.CSS.button, this.CSS.buttonModifier);
+        this.nodes.button.setAttribute('id', 'font-family-btn');
+        this.getFontSizeForButton();
+        this.nodes.button.appendChild(_dom["default"].svg('toggler-down', 13, 13));
+      }
+    }, {
+      key: "getFontSizeForButton",
+      value: function getFontSizeForButton() {
+        this.buttonWrapperText = document.createElement('div');
+        this.buttonWrapperText.classList.add('button-wrapper-text');
+        var displaySelectedFontFamily = document.createElement('div');
+        displaySelectedFontFamily.setAttribute('id', 'font-family-dropdown');
+        displaySelectedFontFamily.innerHTML = '&nbsp;&nbsp';
+
+        _dom["default"].append(this.buttonWrapperText, displaySelectedFontFamily);
+
+        _dom["default"].append(this.nodes.button, this.buttonWrapperText);
+      }
+    }, {
+      key: "addFontSizeOptions",
+      value: function addFontSizeOptions() {
+        var _this = this;
+
+        var values = ['PT Mono', 'Segoe UI', 'Oxygen', 'Roboto', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'];
+        this.selectionList = document.createElement('div');
+        this.selectionList.setAttribute('class', 'selectionList');
+        var selectionListWrapper = document.createElement('div');
+        selectionListWrapper.setAttribute('class', 'selection-list-wrapper');
+
+        for (var _i = 0, _values = values; _i < _values.length; _i++) {
+          var value = _values[_i];
+          var option = document.createElement('div');
+          option.setAttribute('value', value);
+          option.classList.add('selection-list-option');
+
+          if (this.selectedFontFamily === value) {
+            option.classList.add('selection-list-option-active');
+          }
+
+          option.innerHTML = value;
+
+          _dom["default"].append(selectionListWrapper, option);
+        }
+
+        _dom["default"].append(this.selectionList, selectionListWrapper);
+
+        _dom["default"].append(this.nodes.button, this.selectionList);
+
+        this.selectionList.addEventListener('click', function (event) {
+          _this.selectedFontFamily = event.target.innerHTML;
+
+          _this.removeFontSizeOptions();
+        });
+      }
+    }, {
+      key: "removeFontSizeOptions",
+      value: function removeFontSizeOptions() {
+        this.isDropDownOpen = false;
+        this.selectionList.remove();
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        this.createButton();
+        this.nodes.button.addEventListener('click', function ($event) {
+          console.log($event);
+
+          if (!_this2.isDropDownOpen && ($event.target.id === 'font-family-dropdown' || $event.target.parentNode.id) === 'font-family-btn') {
+            _this2.addFontSizeOptions();
+
+            _this2.isDropDownOpen = true;
+          }
+        });
+        return this.nodes.button;
+      }
+    }, {
+      key: "surround",
+      value: function surround(range) {// if(this.selectedFontFamily) {
+        //     const selectedDocument = document.getSelection().toString();
+        //     const fontSize = (size, unit) => {
+        //         const font = `${size}${unit}`;
+        //         const spanString = document.createElement('span');
+        //         spanString.setAttribute('text', selectedDocument);
+        //         spanString.innerHTML = selectedDocument;
+        //         spanString.style.fontSize = font;
+        //         document.execCommand(this.commandName, false, spanString.outerHTML);
+        //     }
+        //     fontSize(this.selectedFontFamily, 'px');
+        // }
+      }
+    }, {
+      key: "checkState",
+      value: function checkState(selection) {
+        var isActive = document.queryCommandState(this.commandName); // const computedFontSize= window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-family');
+        // this.selectedFontFamily = computedFontSize.slice(0, computedFontSize.indexOf('p'));
+        // this.replaceFontSizeInWrapper(this.selectedFontFamily);
+
+        return isActive;
+      }
+    }, {
+      key: "replaceFontSizeInWrapper",
+      value: function replaceFontSizeInWrapper(size) {
+        var displaySelectedFontFamily = document.getElementById('font-family-dropdown');
+        displaySelectedFontFamily.innerHTML = size;
+      }
+    }], [{
+      key: "sanitize",
+      get: function get() {
+        return {
+          p: {}
+        };
+      }
+    }]);
+    return FontFamilyTool;
+  }();
+
+  _exports["default"] = FontFamilyTool;
+  FontFamilyTool.displayName = "FontFamilyTool";
+  FontFamilyTool.isInline = true;
+  FontFamilyTool.title = 'FontFamily';
+  module.exports = exports.default;
+});
+
+/***/ }),
+
 /***/ "./src/components/inline-tools/inline-tool-italic.ts":
 /*!***********************************************************!*\
   !*** ./src/components/inline-tools/inline-tool-italic.ts ***!
@@ -26140,12 +26317,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function (global, factory) {
   if (true) {
-    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/slicedToArray.js"), __webpack_require__(/*! @babel/runtime/helpers/typeof */ "./node_modules/@babel/runtime/helpers/typeof.js"), __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js"), __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js"), __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js"), __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"), __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js"), __webpack_require__(/*! ../tools/paragraph/dist/bundle */ "./src/components/tools/paragraph/dist/bundle.js"), __webpack_require__(/*! ../__module */ "./src/components/__module.ts"), __webpack_require__(/*! ../utils */ "./src/components/utils.ts"), __webpack_require__(/*! ../inline-tools/inline-tool-bold */ "./src/components/inline-tools/inline-tool-bold.ts"), __webpack_require__(/*! ../inline-tools/inline-tool-italic */ "./src/components/inline-tools/inline-tool-italic.ts"), __webpack_require__(/*! ../inline-tools/inline-tool-link */ "./src/components/inline-tools/inline-tool-link.ts"), __webpack_require__(/*! ../tools/stub */ "./src/components/tools/stub/index.ts")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports, __webpack_require__(/*! @babel/runtime/helpers/slicedToArray */ "./node_modules/@babel/runtime/helpers/slicedToArray.js"), __webpack_require__(/*! @babel/runtime/helpers/typeof */ "./node_modules/@babel/runtime/helpers/typeof.js"), __webpack_require__(/*! @babel/runtime/helpers/classCallCheck */ "./node_modules/@babel/runtime/helpers/classCallCheck.js"), __webpack_require__(/*! @babel/runtime/helpers/createClass */ "./node_modules/@babel/runtime/helpers/createClass.js"), __webpack_require__(/*! @babel/runtime/helpers/inherits */ "./node_modules/@babel/runtime/helpers/inherits.js"), __webpack_require__(/*! @babel/runtime/helpers/possibleConstructorReturn */ "./node_modules/@babel/runtime/helpers/possibleConstructorReturn.js"), __webpack_require__(/*! @babel/runtime/helpers/getPrototypeOf */ "./node_modules/@babel/runtime/helpers/getPrototypeOf.js"), __webpack_require__(/*! ../tools/paragraph/dist/bundle */ "./src/components/tools/paragraph/dist/bundle.js"), __webpack_require__(/*! ../__module */ "./src/components/__module.ts"), __webpack_require__(/*! ../utils */ "./src/components/utils.ts"), __webpack_require__(/*! ../inline-tools/inline-tool-bold */ "./src/components/inline-tools/inline-tool-bold.ts"), __webpack_require__(/*! ../inline-tools/inline-tool-italic */ "./src/components/inline-tools/inline-tool-italic.ts"), __webpack_require__(/*! ../inline-tools/inline-tool-link */ "./src/components/inline-tools/inline-tool-link.ts"), __webpack_require__(/*! ../tools/stub */ "./src/components/tools/stub/index.ts"), __webpack_require__(/*! ../inline-tools/inline-tool-font-family */ "./src/components/inline-tools/inline-tool-font-family.ts")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
   } else { var mod; }
-})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _slicedToArray2, _typeof2, _classCallCheck2, _createClass2, _inherits2, _possibleConstructorReturn2, _getPrototypeOf2, _bundle, _module, _, _inlineToolBold, _inlineToolItalic, _inlineToolLink, _stub) {
+})(typeof globalThis !== "undefined" ? globalThis : typeof self !== "undefined" ? self : this, function (_exports, _slicedToArray2, _typeof2, _classCallCheck2, _createClass2, _inherits2, _possibleConstructorReturn2, _getPrototypeOf2, _bundle, _module, _, _inlineToolBold, _inlineToolItalic, _inlineToolLink, _stub, _inlineToolFontFamily) {
   "use strict";
 
   var _interopRequireWildcard = __webpack_require__(/*! @babel/runtime/helpers/interopRequireWildcard */ "./node_modules/@babel/runtime/helpers/interopRequireWildcard.js");
@@ -26170,6 +26347,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   _inlineToolItalic = _interopRequireDefault(_inlineToolItalic);
   _inlineToolLink = _interopRequireDefault(_inlineToolLink);
   _stub = _interopRequireDefault(_stub);
+  _inlineToolFontFamily = _interopRequireDefault(_inlineToolFontFamily);
 
   function _createSuper(Derived) { return function () { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
 
@@ -26662,6 +26840,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           },
           link: {
             "class": _inlineToolLink["default"]
+          },
+          fontFamily: {
+            "class": _inlineToolFontFamily["default"]
           },
           paragraph: {
             "class": _bundle["default"],
