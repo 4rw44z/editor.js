@@ -31,10 +31,10 @@ export default class FontFamilyTool implements InlineTool {
         this.nodes.button.type = 'button';
         this.nodes.button.classList.add(this.CSS.button, this.CSS.buttonModifier);
         this.nodes.button.setAttribute('id', 'font-family-btn');
-        this.getFontSizeForButton();
+        this.getFontFamilyForButton();
         this.nodes.button.appendChild($.svg('toggler-down', 13, 13));
     }
-    getFontSizeForButton() {
+    getFontFamilyForButton() {
         this.buttonWrapperText = document.createElement('div');
         this.buttonWrapperText.classList.add('button-wrapper-text');
         const displaySelectedFontFamily = document.createElement('div');
@@ -43,7 +43,7 @@ export default class FontFamilyTool implements InlineTool {
         $.append(this.buttonWrapperText, displaySelectedFontFamily);
         $.append(this.nodes.button, this.buttonWrapperText);
     }
-    public addFontSizeOptions() {
+    public addFontFamilyOptions() {
         const values = ['PT Mono', 'Segoe UI', 'Oxygen', 'Roboto', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'];
         this.selectionList = document.createElement('div');
         this.selectionList.setAttribute('class', 'selectionList');
@@ -75,7 +75,7 @@ export default class FontFamilyTool implements InlineTool {
         this.nodes.button.addEventListener('click', ($event) => {
             console.log($event);
             if(!this.isDropDownOpen && ((<HTMLElement>$event.target).id === 'font-family-dropdown'|| (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id) === 'font-family-btn') {
-                this.addFontSizeOptions();
+                this.addFontFamilyOptions();
                 this.isDropDownOpen = true;
             }
         });
