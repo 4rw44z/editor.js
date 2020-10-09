@@ -14571,7 +14571,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     function FontSizeInlineTool() {
       (0, _classCallCheck2["default"])(this, FontSizeInlineTool);
       this.isDropDownOpen = false;
-      this.commandName = 'insertHtml';
+      this.commandName = 'fontSize';
       this.CSS = {
         button: 'ce-inline-tool',
         buttonActive: 'ce-font-size-tool--active',
@@ -14613,23 +14613,47 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function addFontSizeOptions() {
         var _this = this;
 
-        var values = ['8', '9', '10', '11', '12', '14', '18', '24', '30', '36', '48', '60', '72', '96'];
+        // const values = ['8', '9', '10', '11', '12', '14', '18', '24', '30', '36','48', '60', '72', '96'];
+        // const values = ['1', '2', '3', '4', '5', '6', '7'];
+        var fontSizeList = [{
+          label: '10',
+          value: '1'
+        }, {
+          label: '13',
+          value: '2'
+        }, {
+          label: '16',
+          value: '3'
+        }, {
+          label: '18',
+          value: '4'
+        }, {
+          label: '24',
+          value: '5'
+        }, {
+          label: '32',
+          value: '6'
+        }, {
+          label: '48',
+          value: '7'
+        }];
         this.selectionList = document.createElement('div');
         this.selectionList.setAttribute('class', 'selectionList');
         var selectionListWrapper = document.createElement('div');
         selectionListWrapper.setAttribute('class', 'selection-list-wrapper');
 
-        for (var _i = 0, _values = values; _i < _values.length; _i++) {
-          var value = _values[_i];
+        for (var _i = 0, _fontSizeList = fontSizeList; _i < _fontSizeList.length; _i++) {
+          var value = _fontSizeList[_i];
           var option = document.createElement('div');
-          option.setAttribute('value', value);
+          option.setAttribute('value', value.value);
+          option.setAttribute('id', value.value);
           option.classList.add('selection-list-option');
 
-          if (this.selectedFontSize === value) {
+          if (this.selectedFontSize === value.value) {
             option.classList.add('selection-list-option-active');
           }
 
-          option.innerHTML = value;
+          option.innerHTML = value.label;
 
           _dom["default"].append(selectionListWrapper, option);
         }
@@ -14639,7 +14663,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         _dom["default"].append(this.nodes.button, this.selectionList);
 
         this.selectionList.addEventListener('click', function (event) {
-          _this.selectedFontSize = event.target.innerHTML;
+          _this.selectedFontSize = event.target.id;
 
           _this.removeFontSizeOptions();
         });
@@ -14659,7 +14683,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.nodes.button.addEventListener('click', function ($event) {
           console.log($event);
 
-          if (!_this2.isDropDownOpen && ($event.target.id === 'font-size-dropdown' || $event.target.parentNode.id) === 'font-size-btn') {
+          if (!_this2.isDropDownOpen && ($event.target.id === 'font-size-dropdown' || $event.target.parentNode.id === 'font-size-btn')) {
             _this2.addFontSizeOptions();
 
             _this2.isDropDownOpen = true;
@@ -14670,30 +14694,30 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "surround",
       value: function surround(range) {
-        var _this3 = this;
-
+        // if(this.selectedFontSize) {
+        //     const selectedDocument = document.getSelection().toString();
+        //     const fontSize = (size, unit) => {
+        //         const font = `${size}${unit}`;
+        //         const spanString = document.createElement('span');
+        //         spanString.setAttribute('text', selectedDocument);
+        //         spanString.innerHTML = selectedDocument;
+        //         spanString.style.fontSize = font;
+        //         document.execCommand(this.commandName, false, spanString.outerHTML);
+        //     }
+        //     fontSize(this.selectedFontSize, 'px');
+        // }
+        // document.execCommand('bold');
         if (this.selectedFontSize) {
-          var selectedDocument = document.getSelection().toString();
-
-          var fontSize = function fontSize(size, unit) {
-            var font = "".concat(size).concat(unit);
-            var spanString = document.createElement('span');
-            spanString.setAttribute('text', selectedDocument);
-            spanString.innerHTML = selectedDocument;
-            spanString.style.fontSize = font;
-            document.execCommand(_this3.commandName, false, spanString.outerHTML);
-          };
-
-          fontSize(this.selectedFontSize, 'px');
+          document.execCommand('fontSize', false, this.selectedFontSize);
         }
       }
     }, {
       key: "checkState",
       value: function checkState(selection) {
-        var isActive = document.queryCommandState(this.commandName);
+        var isActive = document.queryCommandState('fontSize');
         var computedFontSize = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
-        this.selectedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
-        this.replaceFontSizeInWrapper(this.selectedFontSize);
+        computedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
+        this.replaceFontSizeInWrapper(computedFontSize);
         return isActive;
       }
     }, {

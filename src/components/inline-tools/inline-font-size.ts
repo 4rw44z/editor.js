@@ -13,7 +13,7 @@ export default class FontSizeInlineTool implements InlineTool {
             p: {},
         } as SanitizerConfig;
     }
-    private readonly commandName: string = 'insertHtml';
+    public commandName: string = 'fontSize';
     private readonly CSS = {
         button: 'ce-inline-tool',
         buttonActive: 'ce-font-size-tool--active',
@@ -24,7 +24,7 @@ export default class FontSizeInlineTool implements InlineTool {
     private nodes: {button : HTMLButtonElement}  = {
         button: undefined
     }
-    private selectionList = undefined;
+    public selectionList = undefined;
     private buttonWrapperText = undefined;
     createButton() {
         this.nodes.button = document.createElement('button') as HTMLButtonElement;
@@ -44,25 +44,36 @@ export default class FontSizeInlineTool implements InlineTool {
         $.append(this.nodes.button, this.buttonWrapperText);
     }
     public addFontSizeOptions() {
-        const values = ['8', '9', '10', '11', '12', '14', '18', '24', '30', '36','48', '60', '72', '96'];
+        // const values = ['8', '9', '10', '11', '12', '14', '18', '24', '30', '36','48', '60', '72', '96'];
+        // const values = ['1', '2', '3', '4', '5', '6', '7'];
+        const fontSizeList = [
+            {label: '10', value: '1' },
+            {label: '13', value: '2'},
+            {label: '16', value: '3'},
+            {label: '18', value: '4'},
+            {label: '24', value: '5'},
+            {label: '32', value: '6'},
+            {label: '48', value: '7'}
+        ];
         this.selectionList = document.createElement('div');
         this.selectionList.setAttribute('class', 'selectionList');
         const selectionListWrapper = document.createElement('div');
         selectionListWrapper.setAttribute('class', 'selection-list-wrapper');
-        for(const value of values) {
+        for(const value of fontSizeList) {
             const option = document.createElement('div');
-            option.setAttribute('value', value);
+            option.setAttribute('value', value.value);
+            option.setAttribute('id', value.value);
             option.classList.add('selection-list-option');
-            if(this.selectedFontSize === value){
+            if(this.selectedFontSize === value.value){
             option.classList.add('selection-list-option-active');
             }
-            option.innerHTML = value;
+            option.innerHTML = value.label;
             $.append(selectionListWrapper, option);
         }
         $.append(this.selectionList, selectionListWrapper);
         $.append(this.nodes.button, this.selectionList);
         this.selectionList.addEventListener('click', (event) => {
-            this.selectedFontSize = event.target.innerHTML;
+            this.selectedFontSize = event.target.id;
             this.removeFontSizeOptions();
         });
     };
@@ -74,7 +85,7 @@ export default class FontSizeInlineTool implements InlineTool {
         this.createButton();
         this.nodes.button.addEventListener('click', ($event) => {
             console.log($event);
-            if(!this.isDropDownOpen && ((<HTMLElement>$event.target).id === 'font-size-dropdown'|| (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id) === 'font-size-btn') {
+            if(!this.isDropDownOpen && ((<HTMLElement>$event.target).id === 'font-size-dropdown'|| (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id === 'font-size-btn')) {
                 this.addFontSizeOptions();
                 this.isDropDownOpen = true;
             }
@@ -82,25 +93,30 @@ export default class FontSizeInlineTool implements InlineTool {
         return this.nodes.button;
     }
     public surround(range: Range): void {
+        // if(this.selectedFontSize) {
+        //     const selectedDocument = document.getSelection().toString();
+        //     const fontSize = (size, unit) => {
+        //         const font = `${size}${unit}`;
+        //         const spanString = document.createElement('span');
+        //         spanString.setAttribute('text', selectedDocument);
+        //         spanString.innerHTML = selectedDocument;
+        //         spanString.style.fontSize = font;
+        //         document.execCommand(this.commandName, false, spanString.outerHTML);
+        //     }
+        //     fontSize(this.selectedFontSize, 'px');
+        // }
+        // document.execCommand('bold');
+
         if(this.selectedFontSize) {
-            const selectedDocument = document.getSelection().toString();
-            const fontSize = (size, unit) => {
-                const font = `${size}${unit}`;
-                const spanString = document.createElement('span');
-                spanString.setAttribute('text', selectedDocument);
-                spanString.innerHTML = selectedDocument;
-                spanString.style.fontSize = font;
-                document.execCommand(this.commandName, false, spanString.outerHTML);
-            }
-            fontSize(this.selectedFontSize, 'px');
+            document.execCommand('fontSize', false, this.selectedFontSize);
         }
     }
 
     public checkState(selection: Selection){
-        const isActive =  document.queryCommandState(this.commandName);
-        const computedFontSize= window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
-        this.selectedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
-        this.replaceFontSizeInWrapper(this.selectedFontSize);
+        const isActive = document.queryCommandState('fontSize');
+        let computedFontSize= window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
+        computedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
+        this.replaceFontSizeInWrapper(computedFontSize);
         return isActive;
     }
     public replaceFontSizeInWrapper(size) {
