@@ -106,7 +106,7 @@ export default class UI extends Module {
    * @type {DOMRect}
    */
   private contentRectCache: DOMRect = undefined;
-
+  public SelectedContent = null;
   /**
    * Handle window resize only when it finished
    *
@@ -696,7 +696,10 @@ export default class UI extends Module {
    * @param {Event} event - selection event
    */
   private selectionChanged(event: Event): void {
+    // console.log(event);
     const focusedElement = Selection.anchorElement as Element;
+    // if(focusedElement.)
+    this.SelectedContent = focusedElement;
 
     /**
      * Event can be fired on clicks at the Editor elements, for example, at the Inline Toolbar
