@@ -177,9 +177,12 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            &-active .selection-list-option:hover{
+            &-active {
               background-color: #eff2f5;
             }
+          }
+          .selection-list-option:hover {
+            background-color: #eff2f5;
           }
         }
 

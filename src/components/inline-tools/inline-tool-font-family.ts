@@ -1,5 +1,5 @@
 import $ from '../dom';
-import {InlineTool, SanitizerConfig} from '../../../types';
+import { InlineTool, SanitizerConfig } from '../../../types';
 
 
 export default class FontFamilyTool implements InlineTool {
@@ -21,7 +21,7 @@ export default class FontFamilyTool implements InlineTool {
 
     }
     private selectedFontFamily = null;
-    private nodes: {button : HTMLButtonElement}  = {
+    private nodes: { button: HTMLButtonElement } = {
         button: undefined
     }
     private selectionList = undefined;
@@ -46,21 +46,29 @@ export default class FontFamilyTool implements InlineTool {
         $.append(this.nodes.button, this.buttonWrapperText);
     }
     public addFontFamilyOptions() {
-        const values = ['Arial','Arial Black','Charcoal',
-        'Comic Sans MS','Courier New', 'Geneva', 'Helvetica',
-        'Helvetica Neue','Impact', 'Lucida Sans Unicode','Monaco',
-        'PT Mono', 'Segoe UI', 'Verdana',
+        const values = ['Arial', 'Arial Black', 'Arial Narrow', 'Arial Rounded MT Bold',
+            'Avant Garde', 'Baskerville', 'Bodoni MT', 'Book Antiqua', 'Big Caslon', 'Calibri', 'Calisto MT', 'Cambria', 'Candara', 'Century Gothic',
+            'Charcoal', 'Copperplate',
+            'Comic Sans MS', 'Courier New',
+            'Didot',
+            'Franklin Gothic Medium',
+            'Futura', 'Geneva', 'Gill Sans', 'Garamond', 'Georgia', 'Goudy Old Style',
+            'Hoefler Text',
+            'Helvetica',
+            'Helvetica Neue', 'Impact', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Bright', 'Monaco', 'Optima', 'Papyrus',
+            'PT Mono', 'Palatino', 'Perpetua', 'Rockwell', 'Rockwell Extra Bold', 'Segoe UI', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana',
         ];
         this.selectionList = document.createElement('div');
         this.selectionList.setAttribute('class', 'selectionList');
         const selectionListWrapper = document.createElement('div');
         selectionListWrapper.setAttribute('class', 'selection-list-wrapper-font');
-        for(const value of values) {
+        for (const value of values) {
             const option = document.createElement('div');
             option.setAttribute('value', value);
+            option.setAttribute('style', `font-family:${value}`);
             option.classList.add('selection-list-option');
-            if(this.selectedFontFamily === value){
-            option.classList.add('selection-list-option-active');
+            if (this.selectedFontFamily === value) {
+                option.classList.add('selection-list-option-active');
             }
             option.innerHTML = value;
             $.append(selectionListWrapper, option);
@@ -72,7 +80,7 @@ export default class FontFamilyTool implements InlineTool {
             this.toggle();
         });
         setTimeout(() => {
-            if(typeof this.togglingCallback ==='function') {
+            if (typeof this.togglingCallback === 'function') {
                 this.togglingCallback(true);
             }
         }, 50);
@@ -87,9 +95,9 @@ export default class FontFamilyTool implements InlineTool {
     public render(): HTMLElement {
         this.createButton();
         this.nodes.button.addEventListener('click', ($event) => {
-            if(((<HTMLElement>$event.target).id === 'font-family-dropdown'|| (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id === 'font-family-btn')) {
+            if (((<HTMLElement>$event.target).id === 'font-family-dropdown' || (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id === 'font-family-btn')) {
                 this.toggle((toolbarOpened) => {
-                    if(toolbarOpened) {
+                    if (toolbarOpened) {
                         this.isDropDownOpen = true;
                     }
                 });
@@ -97,32 +105,32 @@ export default class FontFamilyTool implements InlineTool {
         });
         return this.nodes.button;
     }
-    public toggle(togglingCallback ?: (openedState:boolean) => void):void {
-        if(!this.isDropDownOpen && togglingCallback) {
+    public toggle(togglingCallback?: (openedState: boolean) => void): void {
+        if (!this.isDropDownOpen && togglingCallback) {
             this.addFontFamilyOptions();
         } else {
             this.removeFontOptions();
         }
-        if(typeof togglingCallback === 'function') {
+        if (typeof togglingCallback === 'function') {
             this.togglingCallback = togglingCallback;
         }
     }
     public surround(range: Range): void {
-      if(this.selectedFontFamily) {
-          document.execCommand(this.commandName, false, this.selectedFontFamily);
-      }
+        if (this.selectedFontFamily) {
+            document.execCommand(this.commandName, false, this.selectedFontFamily);
+        }
     }
 
-    public checkState(selection: Selection){
-        const isActive =  document.queryCommandState(this.commandName);
-        let selectedFont= window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-family');
+    public checkState(selection: Selection) {
+        const isActive = document.queryCommandState(this.commandName);
+        let selectedFont = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-family');
         selectedFont = selectedFont.slice(1, -1);
-         this.replaceFontSizeInWrapper(selectedFont);
+        this.replaceFontSizeInWrapper(selectedFont);
         return isActive;
     }
-    public replaceFontSizeInWrapper(size) {
+    public replaceFontSizeInWrapper(fontFamily) {
         const displaySelectedFontFamily = document.getElementById('font-family-dropdown')
-        displaySelectedFontFamily.innerHTML = size;
+        displaySelectedFontFamily.innerHTML = fontFamily;
     }
 
 }
