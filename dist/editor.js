@@ -14730,6 +14730,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       };
       this.selectionList = undefined;
       this.buttonWrapperText = undefined;
+      this.togglingCallback = null;
     }
 
     (0, _createClass2["default"])(FontFamilyTool, [{
@@ -14789,14 +14790,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.selectionList.addEventListener('click', function (event) {
           _this.selectedFontFamily = event.target.innerHTML;
 
-          _this.removeFontSizeOptions();
+          _this.toggle();
         });
+        setTimeout(function () {
+          if (typeof _this.togglingCallback === 'function') {
+            _this.togglingCallback(true);
+          }
+        }, 50);
       }
     }, {
-      key: "removeFontSizeOptions",
-      value: function removeFontSizeOptions() {
+      key: "removeFontOptions",
+      value: function removeFontOptions() {
         this.isDropDownOpen = false;
-        this.selectionList.remove();
+        this.selectionList = this.selectionList.remove();
+
+        if (typeof this.togglingCallback === 'function') {
+          this.togglingCallback(false);
+        }
       }
     }, {
       key: "render",
@@ -14805,15 +14815,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         this.createButton();
         this.nodes.button.addEventListener('click', function ($event) {
-          console.log($event);
-
-          if (!_this2.isDropDownOpen && ($event.target.id === 'font-family-dropdown' || $event.target.parentNode.id === 'font-family-btn')) {
-            _this2.addFontFamilyOptions();
-
-            _this2.isDropDownOpen = true;
+          if ($event.target.id === 'font-family-dropdown' || $event.target.parentNode.id === 'font-family-btn') {
+            _this2.toggle(function (toolbarOpened) {
+              if (toolbarOpened) {
+                _this2.isDropDownOpen = true;
+              }
+            });
           }
         });
         return this.nodes.button;
+      }
+    }, {
+      key: "toggle",
+      value: function toggle(togglingCallback) {
+        if (!this.isDropDownOpen && togglingCallback) {
+          this.addFontFamilyOptions();
+        } else {
+          this.removeFontOptions();
+        }
+
+        if (typeof togglingCallback === 'function') {
+          this.togglingCallback = togglingCallback;
+        }
       }
     }, {
       key: "surround",

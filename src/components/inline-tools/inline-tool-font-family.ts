@@ -26,6 +26,7 @@ export default class FontFamilyTool implements InlineTool {
     }
     private selectionList = undefined;
     private buttonWrapperText = undefined;
+    private togglingCallback = null;
     createButton() {
         this.nodes.button = document.createElement('button') as HTMLButtonElement;
         this.nodes.button.type = 'button';
@@ -68,23 +69,43 @@ export default class FontFamilyTool implements InlineTool {
         $.append(this.nodes.button, this.selectionList);
         this.selectionList.addEventListener('click', (event) => {
             this.selectedFontFamily = event.target.innerHTML;
-            this.removeFontSizeOptions();
+            this.toggle();
         });
+        setTimeout(() => {
+            if(typeof this.togglingCallback ==='function') {
+                this.togglingCallback(true);
+            }
+        }, 50);
     };
-    public removeFontSizeOptions() {
+    public removeFontOptions() {
         this.isDropDownOpen = false;
-        this.selectionList.remove();
+        this.selectionList = this.selectionList.remove();
+        if (typeof this.togglingCallback === 'function') {
+            this.togglingCallback(false);
+        }
     }
     public render(): HTMLElement {
         this.createButton();
         this.nodes.button.addEventListener('click', ($event) => {
-            console.log($event);
-            if(!this.isDropDownOpen && ((<HTMLElement>$event.target).id === 'font-family-dropdown'|| (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id === 'font-family-btn')) {
-                this.addFontFamilyOptions();
-                this.isDropDownOpen = true;
+            if(((<HTMLElement>$event.target).id === 'font-family-dropdown'|| (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id === 'font-family-btn')) {
+                this.toggle((toolbarOpened) => {
+                    if(toolbarOpened) {
+                        this.isDropDownOpen = true;
+                    }
+                });
             }
         });
         return this.nodes.button;
+    }
+    public toggle(togglingCallback ?: (openedState:boolean) => void):void {
+        if(!this.isDropDownOpen && togglingCallback) {
+            this.addFontFamilyOptions();
+        } else {
+            this.removeFontOptions();
+        }
+        if(typeof togglingCallback === 'function') {
+            this.togglingCallback = togglingCallback;
+        }
     }
     public surround(range: Range): void {
       if(this.selectedFontFamily) {
