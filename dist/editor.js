@@ -14571,6 +14571,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     function FontSizeInlineTool() {
       (0, _classCallCheck2["default"])(this, FontSizeInlineTool);
       this.isDropDownOpen = false;
+      this.togglingCallback = null;
       this.commandName = 'fontSize';
       this.CSS = {
         button: 'ce-inline-tool',
@@ -14613,8 +14614,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function addFontSizeOptions() {
         var _this = this;
 
-        // const values = ['8', '9', '10', '11', '12', '14', '18', '24', '30', '36','48', '60', '72', '96'];
-        // const values = ['1', '2', '3', '4', '5', '6', '7'];
         var fontSizeList = [{
           label: '10',
           value: '1'
@@ -14665,14 +14664,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.selectionList.addEventListener('click', function (event) {
           _this.selectedFontSize = event.target.id;
 
-          _this.removeFontSizeOptions();
+          _this.toggle();
         });
+        setTimeout(function () {
+          if (typeof _this.togglingCallback === 'function') {
+            _this.togglingCallback(true);
+          }
+        }, 50);
       }
     }, {
       key: "removeFontSizeOptions",
       value: function removeFontSizeOptions() {
         this.isDropDownOpen = false;
-        this.selectionList.remove();
+        this.selectionList = this.selectionList.remove();
+
+        if (typeof this.togglingCallback === 'function') {
+          this.togglingCallback(false);
+        }
       }
     }, {
       key: "render",
@@ -14683,13 +14691,28 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.nodes.button.addEventListener('click', function ($event) {
           console.log($event);
 
-          if (!_this2.isDropDownOpen && ($event.target.id === 'font-size-dropdown' || $event.target.parentNode.id === 'font-size-btn')) {
-            _this2.addFontSizeOptions();
-
-            _this2.isDropDownOpen = true;
+          if ($event.target.id === 'font-size-dropdown' || $event.target.parentNode.id === 'font-size-btn') {
+            _this2.toggle(function (toolbarOpened) {
+              if (toolbarOpened) {
+                _this2.isDropDownOpen = true;
+              }
+            });
           }
         });
         return this.nodes.button;
+      }
+    }, {
+      key: "toggle",
+      value: function toggle(togglingCallback) {
+        if (!this.isDropDownOpen && togglingCallback) {
+          this.addFontSizeOptions();
+        } else {
+          this.removeFontSizeOptions();
+        }
+
+        if (typeof togglingCallback === 'function') {
+          this.togglingCallback = togglingCallback;
+        }
       }
     }, {
       key: "surround",

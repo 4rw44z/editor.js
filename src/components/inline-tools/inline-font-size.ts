@@ -8,6 +8,7 @@ export default class FontSizeInlineTool implements InlineTool {
 
     public static title = 'FontSize';
     private isDropDownOpen = false;
+    private togglingCallback = null;
     public static get sanitize(): SanitizerConfig {
         return {
             p: {},
@@ -44,8 +45,6 @@ export default class FontSizeInlineTool implements InlineTool {
         $.append(this.nodes.button, this.buttonWrapperText);
     }
     public addFontSizeOptions() {
-        // const values = ['8', '9', '10', '11', '12', '14', '18', '24', '30', '36','48', '60', '72', '96'];
-        // const values = ['1', '2', '3', '4', '5', '6', '7'];
         const fontSizeList = [
             {label: '10', value: '1' },
             {label: '13', value: '2'},
@@ -74,23 +73,44 @@ export default class FontSizeInlineTool implements InlineTool {
         $.append(this.nodes.button, this.selectionList);
         this.selectionList.addEventListener('click', (event) => {
             this.selectedFontSize = event.target.id;
-            this.removeFontSizeOptions();
+            this.toggle();
         });
+        setTimeout(() => {
+            if(typeof this.togglingCallback ==='function') {
+                this.togglingCallback(true);
+            }
+        }, 50);
     };
     public removeFontSizeOptions() {
         this.isDropDownOpen = false;
-        this.selectionList.remove();
+        this.selectionList = this.selectionList.remove();
+        if (typeof this.togglingCallback === 'function') {
+            this.togglingCallback(false);
+        }
     }
     public render(): HTMLElement {
         this.createButton();
         this.nodes.button.addEventListener('click', ($event) => {
             console.log($event);
-            if(!this.isDropDownOpen && ((<HTMLElement>$event.target).id === 'font-size-dropdown'|| (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id === 'font-size-btn')) {
-                this.addFontSizeOptions();
-                this.isDropDownOpen = true;
+            if(((<HTMLElement>$event.target).id === 'font-size-dropdown'|| (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id === 'font-size-btn')) {
+                this.toggle((toolbarOpened) => {
+                    if(toolbarOpened) {
+                        this.isDropDownOpen = true;
+                    }
+                })
             }
         });
         return this.nodes.button;
+    }
+    public toggle(togglingCallback ?: (openedState:boolean) => void):void {
+        if(!this.isDropDownOpen && togglingCallback) {
+            this.addFontSizeOptions();
+        } else {
+            this.removeFontSizeOptions();
+        }
+        if(typeof togglingCallback === 'function') {
+            this.togglingCallback = togglingCallback;
+        }
     }
     public surround(range: Range): void {
         // if(this.selectedFontSize) {
