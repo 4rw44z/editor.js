@@ -159,6 +159,8 @@
     .selectionList {
       position: absolute;
       top: 35px;
+      height: 300px;
+      overflow-y: scroll;
       .selection-list-wrapper {
         width: 50px;
         background: #fff;
