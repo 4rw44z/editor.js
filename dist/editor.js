@@ -27359,7 +27359,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
        */
 
       _this.contentRectCache = undefined;
-      _this.SelectedContent = null;
       /**
        * Handle window resize only when it finished
        *
@@ -28033,10 +28032,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "selectionChanged",
       value: function selectionChanged(event) {
-        // console.log(event);
-        var focusedElement = _selection["default"].anchorElement; // if(focusedElement.)
-
-        this.SelectedContent = focusedElement;
+        var focusedElement = _selection["default"].anchorElement;
         /**
          * Event can be fired on clicks at the Editor elements, for example, at the Inline Toolbar
          * We need to skip such firings
