@@ -7,6 +7,7 @@ import Flipper from '../../flipper';
 import I18n from '../../i18n';
 import { I18nInternalNS } from '../../i18n/namespace-internal';
 
+
 /**
  * Inline toolbar with actions that modifies selected text fragment
  *
@@ -256,6 +257,7 @@ export default class InlineToolbar extends Module {
     this.Editor.ConversionToolbar.close();
     this.inlineTools.fontSize.clear();
     this.inlineTools.fontFamily.clear();
+    this.Editor.Tooltip.hide();
   }
 
   /**

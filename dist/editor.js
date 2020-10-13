@@ -25659,6 +25659,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.Editor.ConversionToolbar.close();
         this.inlineTools.fontSize.clear();
         this.inlineTools.fontFamily.clear();
+        this.Editor.Tooltip.hide();
       }
       /**
        * Shows Inline Toolbar
