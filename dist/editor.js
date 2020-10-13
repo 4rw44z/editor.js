@@ -14648,7 +14648,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           option.setAttribute('id', value.value);
           option.classList.add('selection-list-option');
 
-          if (this.selectedFontSize === value.value) {
+          if (document.getElementById('font-size-dropdown').innerHTML === value.value || this.selectedFontSize === value.value) {
             option.classList.add('selection-list-option-active');
           }
 
@@ -14675,8 +14675,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "removeFontSizeOptions",
       value: function removeFontSizeOptions() {
-        this.isDropDownOpen = false;
-        this.selectionList = this.selectionList.remove();
+        if (this.selectionList) {
+          this.isDropDownOpen = false;
+          this.selectionList = this.selectionList.remove();
+        }
 
         if (typeof this.togglingCallback === 'function') {
           this.togglingCallback(false);
@@ -14717,19 +14719,6 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "surround",
       value: function surround(range) {
-        // if(this.selectedFontSize) {
-        //     const selectedDocument = document.getSelection().toString();
-        //     const fontSize = (size, unit) => {
-        //         const font = `${size}${unit}`;
-        //         const spanString = document.createElement('span');
-        //         spanString.setAttribute('text', selectedDocument);
-        //         spanString.innerHTML = selectedDocument;
-        //         spanString.style.fontSize = font;
-        //         document.execCommand(this.commandName, false, spanString.outerHTML);
-        //     }
-        //     fontSize(this.selectedFontSize, 'px');
-        // }
-        // document.execCommand('bold');
         if (this.selectedFontSize) {
           document.execCommand('fontSize', false, this.selectedFontSize);
         }
@@ -14748,6 +14737,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function replaceFontSizeInWrapper(size) {
         var displaySelectedFontSize = document.getElementById('font-size-dropdown');
         displaySelectedFontSize.innerHTML = size;
+      }
+    }, {
+      key: "clear",
+      value: function clear() {
+        this.toggle();
+        this.selectedFontSize = null;
       }
     }], [{
       key: "sanitize",

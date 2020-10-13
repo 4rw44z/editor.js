@@ -63,7 +63,7 @@ export default class FontSizeInlineTool implements InlineTool {
             option.setAttribute('value', value.value);
             option.setAttribute('id', value.value);
             option.classList.add('selection-list-option');
-            if(this.selectedFontSize === value.value){
+            if((document.getElementById('font-size-dropdown').innerHTML === value.value) || (this.selectedFontSize === value.value)){
             option.classList.add('selection-list-option-active');
             }
             option.innerHTML = value.label;
@@ -82,8 +82,10 @@ export default class FontSizeInlineTool implements InlineTool {
         }, 50);
     };
     public removeFontSizeOptions() {
+        if(this.selectionList) {
         this.isDropDownOpen = false;
         this.selectionList = this.selectionList.remove();
+        }
         if (typeof this.togglingCallback === 'function') {
             this.togglingCallback(false);
         }
@@ -113,20 +115,7 @@ export default class FontSizeInlineTool implements InlineTool {
         }
     }
     public surround(range: Range): void {
-        // if(this.selectedFontSize) {
-        //     const selectedDocument = document.getSelection().toString();
-        //     const fontSize = (size, unit) => {
-        //         const font = `${size}${unit}`;
-        //         const spanString = document.createElement('span');
-        //         spanString.setAttribute('text', selectedDocument);
-        //         spanString.innerHTML = selectedDocument;
-        //         spanString.style.fontSize = font;
-        //         document.execCommand(this.commandName, false, spanString.outerHTML);
-        //     }
-        //     fontSize(this.selectedFontSize, 'px');
-        // }
-        // document.execCommand('bold');
-
+      
         if(this.selectedFontSize) {
             document.execCommand('fontSize', false, this.selectedFontSize);
         }
@@ -142,6 +131,11 @@ export default class FontSizeInlineTool implements InlineTool {
     public replaceFontSizeInWrapper(size) {
         const displaySelectedFontSize = document.getElementById('font-size-dropdown')
         displaySelectedFontSize.innerHTML = size;
+    }
+
+    public clear() {
+        this.toggle();
+        this.selectedFontSize = null;
     }
 
 }
