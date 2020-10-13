@@ -255,6 +255,7 @@ export default class InlineToolbar extends Module {
     this.flipper.deactivate();
     this.Editor.ConversionToolbar.close();
     this.inlineTools.fontSize.clear();
+    this.inlineTools.fontFamily.clear();
   }
 
   /**

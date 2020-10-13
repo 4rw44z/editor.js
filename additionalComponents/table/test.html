@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test of Table</title>
+
+    <style>
+
+        body, html {
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #editorjs {
+            width: 800px;
+            margin-top: 10px;
+        }
+
+    </style>
+  <link href="src/styles/table-preview.css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="editorjs"></div>
+<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+<script src="../../example/tools/header/dist/bundle.js"></script><!-- Header -->
+  <script src="../../example/tools/image/dist/bundle.js"></script><!-- Image -->
+  <script src="../../example/tools/delimiter/dist/bundle.js"></script><!-- Delimiter -->
+  <script src="../list/dist/bundle.js"></script><!-- List -->
+  <script src="../../example/tools/checklist/dist/bundle.js"></script><!-- Checklist -->
+  <script src="../../example/tools/quote/dist/bundle.js"></script><!-- Quote -->
+  <script src="../../example/tools/code/dist/bundle.js"></script><!-- Code -->
+  <script src="../../example/tools/embed/dist/bundle.js"></script><!-- Embed -->
+  <script src="../../example/tools/link/dist/bundle.js"></script><!-- Link -->
+  <script src="../../example/tools/raw/dist/bundle.js"></script><!-- Raw -->
+  <script src="../../example/tools/warning/dist/bundle.js"></script><!-- Warning -->
+  <script src="../../example/tools/marker/dist/bundle.js"></script><!-- Marker -->
+  <script src="../../example/tools/inline-code/dist/bundle.js"></script><!-- Inline Code -->
+<script src="dist/bundle.js"></script>
+<script>
+    const editor = new EditorJS({
+      autofocus: true,
+      data: {
+        version: '2.18.0',
+      },
+      placeholder: 'Table tool test',
+      holder: 'editorjs',
+      tools: {
+        table: {
+          class: Table,
+          inlineToolbar: true,
+          config: {
+            rows: 0,
+            cols: 0
+          },
+          
+        },
+        header: {
+          class: Header,
+          inlineToolbar: ['link'],
+          config: {
+            placeholder: 'Header'
+          },
+          shortcut: 'CMD+SHIFT+H'
+        },
+      list: {
+        class: List,
+        inlineToolbar: true,
+        shortcut: 'CMD+SHIFT+L'
+      },
+
+    checklist: {
+      class: Checklist,
+      inlineToolbar: true,
+    },
+
+    quote: {
+      class: Quote,
+      inlineToolbar: true,
+      config: {
+        quotePlaceholder: 'Enter a quote',
+        captionPlaceholder: 'Quote\'s author',
+      },
+      shortcut: 'CMD+SHIFT+O'
+    },
+
+    warning: Warning,
+
+    marker: {
+      class:  Marker,
+      shortcut: 'CMD+SHIFT+M'
+    },
+
+    code: {
+      class:  CodeTool,
+      shortcut: 'CMD+SHIFT+C'
+    },
+
+    delimiter: Delimiter,
+
+    inlineCode: {
+      class: InlineCode,
+      shortcut: 'CMD+SHIFT+C'
+    },
+
+    linkTool: LinkTool,
+
+    raw: RawTool,
+
+    embed: Embed,
+
+      }
+    })
+</script>
+</body>
+</html>

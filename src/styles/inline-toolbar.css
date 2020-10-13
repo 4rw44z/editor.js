@@ -145,6 +145,16 @@
     position: relative;
     .button-wrapper-text{
       width: 30px;
+      &-font-family {
+        width: 80px;
+        .selected-font-family {
+          width: 80px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+      
     }
     .selectionList {
       position: absolute;
@@ -153,6 +163,27 @@
         width: 50px;
         background: #fff;
         border: 1px solid #eaeaea;
+        &-font {
+          width: 100px;
+          background: #fff;
+          border: 1px solid #eaeaea;
+          .selection-list-option {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eaeaea;
+            width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            &-active {
+              background-color: #eff2f5;
+            }
+          }
+          .selection-list-option:hover {
+            background-color: #eff2f5;
+          }
+        }
+
         .selection-list-option {
           padding-top: 5px;
           padding-bottom: 5px;
@@ -166,6 +197,5 @@
         }
       }
     }
-    
   }
 }
