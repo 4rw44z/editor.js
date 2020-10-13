@@ -14762,7 +14762,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function addFontFamilyOptions() {
         var _this = this;
 
-        var values = ['Arial', 'Arial Black', 'Arial Narrow', 'Arial Rounded MT Bold', 'Avant Garde', 'Baskerville', 'Bodoni MT', 'Book Antiqua', 'Big Caslon', 'Calibri', 'Calisto MT', 'Cambria', 'Candara', 'Century Gothic', 'Charcoal', 'Copperplate', 'Comic Sans MS', 'Courier New', 'Didot', 'Franklin Gothic Medium', 'Futura', 'Geneva', 'Gill Sans', 'Garamond', 'Georgia', 'Goudy Old Style', 'Hoefler Text', 'Helvetica', 'Helvetica Neue', 'Impact', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Bright', 'Monaco', 'Optima', 'Papyrus', 'PT Mono', 'Palatino', 'Perpetua', 'Rockwell', 'Rockwell Extra Bold', 'Segoe UI', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana'];
+        var values = ['Arial', 'Arial Black', 'Arial Narrow', 'Arial Rounded MT Bold', 'Avant Garde', 'Baskerville', 'Bodoni MT', 'Book Antiqua', 'Big Caslon', 'Calibri', 'Calisto MT', 'Cambria', 'Candara', 'Century Gothic', 'Charcoal', 'Copperplate', 'Comic Sans MS', 'Courier New', 'Didot', 'Franklin Gothic Medium', 'Futura', 'Geneva', 'Gill Sans', 'Garamond', 'Georgia', 'Goudy Old Style', 'Hoefler Text', 'Helvetica', 'Helvetica Neue', 'Impact', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Bright', 'Monaco', 'Optima', 'Papyrus', 'PT Mono', 'Palatino', 'Perpetua', 'Rockwell', 'Roboto', 'Rockwell Extra Bold', 'Segoe UI', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana'];
         this.selectionList = document.createElement('div');
         this.selectionList.setAttribute('class', 'selectionList');
         var selectionListWrapper = document.createElement('div');
@@ -14775,7 +14775,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           option.setAttribute('style', "font-family:".concat(value));
           option.classList.add('selection-list-option');
 
-          if (this.selectedFontFamily === value) {
+          if (document.getElementById('font-family-dropdown').innerHTML === value || this.selectedFontFamily === value) {
             option.classList.add('selection-list-option-active');
           }
 
@@ -14802,8 +14802,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "removeFontOptions",
       value: function removeFontOptions() {
-        this.isDropDownOpen = false;
-        this.selectionList = this.selectionList.remove();
+        if (this.selectionList) {
+          this.isDropDownOpen = false;
+          this.selectionList = this.selectionList.remove();
+        }
 
         if (typeof this.togglingCallback === 'function') {
           this.togglingCallback(false);
@@ -14851,7 +14853,15 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function checkState(selection) {
         var isActive = document.queryCommandState(this.commandName);
         var selectedFont = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-family');
-        selectedFont = selectedFont.slice(1, -1);
+
+        if (selectedFont.slice(0, 1) === '"') {
+          selectedFont = selectedFont.slice(1, -1);
+        } else if (selectedFont.slice(0, 1) === '-') {
+          var updatedFont = selectedFont.slice(selectedFont.indexOf('"') + 1, selectedFont.indexOf('"', selectedFont.indexOf('"') + 1));
+          console.log(selectedFont);
+          selectedFont = updatedFont;
+        }
+
         this.replaceFontSizeInWrapper(selectedFont);
         return isActive;
       }
@@ -14861,11 +14871,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var displaySelectedFontFamily = document.getElementById('font-family-dropdown');
         displaySelectedFontFamily.innerHTML = fontFamily;
       }
+    }, {
+      key: "clear",
+      value: function clear() {
+        this.toggle();
+        this.selectedFontFamily = null;
+      }
     }], [{
       key: "sanitize",
       get: function get() {
         return {
-          p: {}
+          font: {}
         };
       }
     }]);
@@ -25417,6 +25433,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         this.opened = false;
         this.flipper.deactivate();
         this.Editor.ConversionToolbar.close();
+        this.inlineTools.fontFamily.clear();
       }
       /**
        * Shows Inline Toolbar
