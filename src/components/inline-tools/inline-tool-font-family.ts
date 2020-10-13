@@ -6,7 +6,7 @@ export default class FontFamilyTool implements InlineTool {
 
     public static isInline = true;
 
-    public static title = 'FontFamily';
+    public static title = 'Font Family';
     private isDropDownOpen = false;
     public static get sanitize(): SanitizerConfig {
         return {

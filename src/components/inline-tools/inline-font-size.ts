@@ -6,7 +6,7 @@ export default class FontSizeInlineTool implements InlineTool {
 
     public static isInline = true;
 
-    public static title = 'FontSize';
+    public static title = 'Font Size';
     private isDropDownOpen = false;
     private togglingCallback = null;
     public static get sanitize(): SanitizerConfig {
@@ -93,7 +93,6 @@ export default class FontSizeInlineTool implements InlineTool {
     public render(): HTMLElement {
         this.createButton();
         this.nodes.button.addEventListener('click', ($event) => {
-            console.log($event);
             if(((<HTMLElement>$event.target).id === 'font-size-dropdown'|| (<HTMLElement>(<HTMLElement>(<HTMLElement>$event.target).parentNode)).id === 'font-size-btn')) {
                 this.toggle((toolbarOpened) => {
                     if(toolbarOpened) {
