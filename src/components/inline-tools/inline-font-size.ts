@@ -63,7 +63,7 @@ export default class FontSizeInlineTool implements InlineTool {
             option.setAttribute('value', value.value);
             option.setAttribute('id', value.value);
             option.classList.add('selection-list-option');
-            if((document.getElementById('font-size-dropdown').innerHTML === value.value) || (this.selectedFontSize === value.value)){
+            if((document.getElementById('font-size-dropdown').innerHTML === value.label) || (this.selectedFontSize === value.value)){
             option.classList.add('selection-list-option-active');
             }
             option.innerHTML = value.label;
@@ -122,9 +122,16 @@ export default class FontSizeInlineTool implements InlineTool {
 
     public checkState(selection: Selection){
         const isActive = document.queryCommandState('fontSize');
-        let computedFontSize= window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
-        computedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
-        this.replaceFontSizeInWrapper(computedFontSize);
+        let anchoredElementFontSize= window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
+        const focusedElementFontSize = window.getComputedStyle(selection.focusNode.parentElement, null).getPropertyValue('font-size');
+        if(anchoredElementFontSize === focusedElementFontSize) {
+            anchoredElementFontSize = anchoredElementFontSize.slice(0, anchoredElementFontSize.indexOf('p'));
+            this.replaceFontSizeInWrapper(anchoredElementFontSize);
+        }
+        else {
+            const emptyWrapper = '&nbsp;&nbsp'
+            this.replaceFontSizeInWrapper(emptyWrapper);
+        }
         return isActive;
     }
     public replaceFontSizeInWrapper(size) {

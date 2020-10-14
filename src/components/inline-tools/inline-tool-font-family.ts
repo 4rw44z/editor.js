@@ -125,17 +125,22 @@ export default class FontFamilyTool implements InlineTool {
 
     public checkState(selection: Selection) {
         const isActive = document.queryCommandState(this.commandName);
-        let selectedFont = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-family');
-        if(selectedFont.slice(0,1) === '"'){
-            selectedFont = selectedFont.slice(1, -1);
-
+        let anchoreElementSelectedFont = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-family');
+        const focusElementSelectedFont = window.getComputedStyle(selection.focusNode.parentElement, null).getPropertyValue('font-family');
+        if(anchoreElementSelectedFont === focusElementSelectedFont) {
+            if(anchoreElementSelectedFont.slice(0,1) === '"'){
+                anchoreElementSelectedFont = anchoreElementSelectedFont.slice(1, -1);
+            }
+            else if(anchoreElementSelectedFont.slice(0,1) === '-') {
+                const updatedFont = anchoreElementSelectedFont.slice(anchoreElementSelectedFont.indexOf('"')+1, anchoreElementSelectedFont.indexOf('"',anchoreElementSelectedFont.indexOf('"')+1));
+                anchoreElementSelectedFont = updatedFont;
+            }
+            this.replaceFontSizeInWrapper(anchoreElementSelectedFont);
         }
-        else if(selectedFont.slice(0,1) === '-') {
-            const updatedFont = selectedFont.slice(selectedFont.indexOf('"')+1, selectedFont.indexOf('"',selectedFont.indexOf('"')+1));
-            console.log(selectedFont);
-            selectedFont = updatedFont;
+        else {
+            const emptyWrapper = '&nbsp;&nbsp'
+            this.replaceFontSizeInWrapper(emptyWrapper);
         }
-        this.replaceFontSizeInWrapper(selectedFont);
         return isActive;
     }
     public replaceFontSizeInWrapper(fontFamily) {

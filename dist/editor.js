@@ -14648,7 +14648,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           option.setAttribute('id', value.value);
           option.classList.add('selection-list-option');
 
-          if (document.getElementById('font-size-dropdown').innerHTML === value.value || this.selectedFontSize === value.value) {
+          if (document.getElementById('font-size-dropdown').innerHTML === value.label || this.selectedFontSize === value.value) {
             option.classList.add('selection-list-option-active');
           }
 
@@ -14725,9 +14725,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "checkState",
       value: function checkState(selection) {
         var isActive = document.queryCommandState('fontSize');
-        var computedFontSize = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
-        computedFontSize = computedFontSize.slice(0, computedFontSize.indexOf('p'));
-        this.replaceFontSizeInWrapper(computedFontSize);
+        var anchoredElementFontSize = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-size');
+        var focusedElementFontSize = window.getComputedStyle(selection.focusNode.parentElement, null).getPropertyValue('font-size');
+
+        if (anchoredElementFontSize === focusedElementFontSize) {
+          anchoredElementFontSize = anchoredElementFontSize.slice(0, anchoredElementFontSize.indexOf('p'));
+          this.replaceFontSizeInWrapper(anchoredElementFontSize);
+        } else {
+          var emptyWrapper = '&nbsp;&nbsp';
+          this.replaceFontSizeInWrapper(emptyWrapper);
+        }
+
         return isActive;
       }
     }, {
@@ -15074,17 +15082,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "checkState",
       value: function checkState(selection) {
         var isActive = document.queryCommandState(this.commandName);
-        var selectedFont = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-family');
+        var anchoreElementSelectedFont = window.getComputedStyle(selection.anchorNode.parentElement, null).getPropertyValue('font-family');
+        var focusElementSelectedFont = window.getComputedStyle(selection.focusNode.parentElement, null).getPropertyValue('font-family');
 
-        if (selectedFont.slice(0, 1) === '"') {
-          selectedFont = selectedFont.slice(1, -1);
-        } else if (selectedFont.slice(0, 1) === '-') {
-          var updatedFont = selectedFont.slice(selectedFont.indexOf('"') + 1, selectedFont.indexOf('"', selectedFont.indexOf('"') + 1));
-          console.log(selectedFont);
-          selectedFont = updatedFont;
+        if (anchoreElementSelectedFont === focusElementSelectedFont) {
+          if (anchoreElementSelectedFont.slice(0, 1) === '"') {
+            anchoreElementSelectedFont = anchoreElementSelectedFont.slice(1, -1);
+          } else if (anchoreElementSelectedFont.slice(0, 1) === '-') {
+            var updatedFont = anchoreElementSelectedFont.slice(anchoreElementSelectedFont.indexOf('"') + 1, anchoreElementSelectedFont.indexOf('"', anchoreElementSelectedFont.indexOf('"') + 1));
+            anchoreElementSelectedFont = updatedFont;
+          }
+
+          this.replaceFontSizeInWrapper(anchoreElementSelectedFont);
+        } else {
+          var emptyWrapper = '&nbsp;&nbsp';
+          this.replaceFontSizeInWrapper(emptyWrapper);
         }
 
-        this.replaceFontSizeInWrapper(selectedFont);
         return isActive;
       }
     }, {
@@ -25654,9 +25668,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         });
         this.opened = false;
         this.flipper.deactivate();
-        this.Editor.ConversionToolbar.close();
-        this.inlineTools.fontSize.clear();
-        this.inlineTools.fontFamily.clear();
+        this.Editor.ConversionToolbar.close(); // this.inlineTools.fontSize.clear();
+        // this.inlineTools.fontFamily.clear();
+
         this.Editor.Tooltip.hide();
       }
       /**
@@ -26089,7 +26103,17 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "toolClicked",
       value: function toolClicked(tool) {
-        var range = _selection["default"].range;
+        var range = _selection["default"].range; // if (typeof tool.clear === 'function') {
+        //   tool.clear();
+        // }
+        // this.tools.forEach((toolInstance) => {
+        //   if( toolInstance !== tool) {
+        //       if(toolInstance) {
+        //         toolInstance.clear()
+        //       }
+        //   }
+        // })
+
         tool.surround(range);
         this.checkToolsState();
       }
