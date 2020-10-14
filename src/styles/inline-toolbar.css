@@ -147,6 +147,7 @@
       width: 30px;
       &-font-family {
         width: 80px;
+        padding-right: 5px;
         .selected-font-family {
           width: 80px;
           white-space: nowrap;
@@ -159,6 +160,7 @@
     .selectionList {
       position: absolute;
       top: 35px;
+      left: 0;
       height: 300px;
       overflow-y: scroll;
       .selection-list-wrapper {
@@ -166,14 +168,13 @@
         background: #fff;
         border: 1px solid #eaeaea;
         &-font {
-          width: 100px;
+          width: 150px;
           background: #fff;
           border: 1px solid #eaeaea;
           .selection-list-option {
-            padding-top: 5px;
-            padding-bottom: 5px;
+            padding: 5px;
             border-bottom: 1px solid #eaeaea;
-            width: 100px;
+            width: 140px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
