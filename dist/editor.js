@@ -25668,9 +25668,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         });
         this.opened = false;
         this.flipper.deactivate();
-        this.Editor.ConversionToolbar.close(); // this.inlineTools.fontSize.clear();
-        // this.inlineTools.fontFamily.clear();
-
+        this.Editor.ConversionToolbar.close();
         this.Editor.Tooltip.hide();
       }
       /**
@@ -26103,17 +26101,14 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
     }, {
       key: "toolClicked",
       value: function toolClicked(tool) {
-        var range = _selection["default"].range; // if (typeof tool.clear === 'function') {
-        //   tool.clear();
-        // }
-        // this.tools.forEach((toolInstance) => {
-        //   if( toolInstance !== tool) {
-        //       if(toolInstance) {
-        //         toolInstance.clear()
-        //       }
-        //   }
-        // })
-
+        var range = _selection["default"].range;
+        this.tools.forEach(function (toolInstance) {
+          if (toolInstance !== tool) {
+            if (toolInstance.clear) {
+              toolInstance.clear();
+            }
+          }
+        });
         tool.surround(range);
         this.checkToolsState();
       }

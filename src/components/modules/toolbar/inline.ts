@@ -255,8 +255,6 @@ export default class InlineToolbar extends Module {
 
     this.flipper.deactivate();
     this.Editor.ConversionToolbar.close();
-    this.inlineTools.fontSize.clear();
-    this.inlineTools.fontFamily.clear();
     this.Editor.Tooltip.hide();
   }
 
@@ -282,7 +280,7 @@ export default class InlineToolbar extends Module {
         toolInstance.clear();
       }
     });
-
+    
     this.buttonsList = this.nodes.buttons.querySelectorAll(`.${this.CSS.inlineToolButton}`);
     this.opened = true;
 
@@ -660,7 +658,13 @@ export default class InlineToolbar extends Module {
    */
   private toolClicked(tool: InlineTool): void {
     const range = SelectionUtils.range;
-
+    this.tools.forEach((toolInstance) => {
+      if( toolInstance !== tool) {
+          if(toolInstance.clear) {
+            toolInstance.clear()
+          }
+      }
+    })
     tool.surround(range);
     this.checkToolsState();
   }
