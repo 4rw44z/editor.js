@@ -10,7 +10,10 @@ export default class FontFamilyTool implements InlineTool {
     private isDropDownOpen = false;
     public static get sanitize(): SanitizerConfig {
         return {
-            font: {},
+            font: {
+                size: true,
+                face: true
+            },
         } as SanitizerConfig;
     }
     private readonly commandName: string = 'fontName';

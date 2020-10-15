@@ -11,7 +11,10 @@ export default class FontSizeInlineTool implements InlineTool {
     private togglingCallback = null;
     public static get sanitize(): SanitizerConfig {
         return {
-            font: {},
+            font: {
+                size: true,
+                face: true
+            },
         } as SanitizerConfig;
     }
     public commandName: string = 'fontSize';
