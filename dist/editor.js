@@ -14661,7 +14661,9 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "sanitize",
       get: function get() {
         return {
-          b: {}
+          b: {
+            style: true
+          }
         };
       }
     }]);
@@ -21299,7 +21301,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     return result;
                   }, {});
                   customConfig = Object.assign({}, toolsTags, Sanitizer.getAllInlineToolsConfig(), {
-                    br: {}
+                    br: {},
+                    span: {
+                      style: true
+                    }
                   });
                   cleanData = Sanitizer.clean(htmlData, customConfig);
                   /** If there is no HTML or HTML string is equal to plain one, process it as plain text */
@@ -21745,7 +21750,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             result[tag.toLowerCase()] = {};
             return result;
           }, {});
-          var customConfig = Object.assign({}, toolTags, Sanitizer.getInlineToolsConfig(tool));
+          var customConfig = Object.assign({}, toolTags, Sanitizer.getInlineToolsConfig(tool), {
+            br: {},
+            span: {
+              style: true
+            }
+          });
           content.innerHTML = Sanitizer.clean(content.innerHTML, customConfig);
 
           var event = _this6.composePasteEvent('tag', {
@@ -21861,7 +21871,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "processInlinePaste",
       value: function () {
         var _processInlinePaste = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(dataToInsert) {
-          var _this$Editor6, BlockManager, Caret, Sanitizer, Tools, content, currentBlockIsInitial, blockData, needToReplaceCurrentBlock, insertedBlock, currentToolSanitizeConfig;
+          var _this$Editor6, BlockManager, Caret, Sanitizer, Tools, content, currentBlockIsInitial, blockData, needToReplaceCurrentBlock, insertedBlock, tags, toolTags, customConfig;
 
           return _regenerator["default"].wrap(function _callee9$(_context9) {
             while (1) {
@@ -21895,8 +21905,19 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                 case 12:
                   /** If there is no pattern substitute - insert string as it is */
                   if (BlockManager.currentBlock && BlockManager.currentBlock.currentInput) {
-                    currentToolSanitizeConfig = Sanitizer.getInlineToolsConfig(BlockManager.currentBlock.name);
-                    document.execCommand('insertHTML', false, Sanitizer.clean(content.innerHTML, currentToolSanitizeConfig));
+                    // const currentToolSanitizeConfig = Sanitizer.getInlineToolsConfig(BlockManager.currentBlock.name);
+                    tags = Tools.blockTools[BlockManager.currentBlock.name].pasteConfig.tags;
+                    toolTags = tags.reduce(function (result, tag) {
+                      result[tag.toLowerCase()] = {};
+                      return result;
+                    }, {});
+                    customConfig = Object.assign({}, toolTags, Sanitizer.getInlineToolsConfig(BlockManager.currentBlock.name), {
+                      br: {},
+                      span: {
+                        style: true
+                      }
+                    });
+                    document.execCommand('insertHTML', false, Sanitizer.clean(content.innerHTML, customConfig));
                   } else {
                     this.insertBlock(dataToInsert);
                   }
