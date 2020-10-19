@@ -29,7 +29,7 @@ export default class BoldInlineTool implements InlineTool {
    */
   public static get sanitize(): SanitizerConfig {
     return {
-      b: { style: true},
+      b: {},
     } as SanitizerConfig;
   }
 
