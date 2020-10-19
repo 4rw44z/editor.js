@@ -23440,7 +23440,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var _save = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
           var _this = this;
 
-          var _this$Editor, BlockManager, Sanitizer, ModificationsObserver, blocks, chainData, extractedData, sanitizedData;
+          var _this$Editor, BlockManager, Sanitizer, ModificationsObserver, blocks, chainData, extractedData;
 
           return _regenerator["default"].wrap(function _callee$(_context) {
             while (1) {
@@ -23461,15 +23461,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 case 6:
                   extractedData = _context.sent;
-                  _context.next = 9;
-                  return Sanitizer.sanitizeBlocks(extractedData);
+                  console.log(extractedData); // const sanitizedData = await Sanitizer.sanitizeBlocks(extractedData);
 
-                case 9:
-                  sanitizedData = _context.sent;
                   ModificationsObserver.enable();
-                  return _context.abrupt("return", this.makeOutput(sanitizedData));
+                  return _context.abrupt("return", this.makeOutput(extractedData));
 
-                case 12:
+                case 10:
                 case "end":
                   return _context.stop();
               }
