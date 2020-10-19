@@ -58,7 +58,7 @@ export default class FontFamilyTool implements InlineTool {
             'Futura', 'Geneva', 'Gill Sans', 'Garamond', 'Georgia', 'Goudy Old Style',
             'Hoefler Text',
             'Helvetica',
-            'Helvetica Neue', 'Impact', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Bright', 'Monaco', 'Optima', 'Papyrus',
+            'Helvetica Neue', 'Impact','Lato','Lucida Sans Unicode', 'Lucida Grande', 'Lucida Bright', 'Monaco', 'Optima', 'Papyrus',
             'PT Mono', 'Palatino', 'Perpetua', 'Rockwell', 'Roboto', 'Rockwell Extra Bold', 'Segoe UI', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana',
         ];
         this.selectionList = document.createElement('div');
@@ -137,6 +137,9 @@ export default class FontFamilyTool implements InlineTool {
             else if(anchoreElementSelectedFont.slice(0,1) === '-') {
                 const updatedFont = anchoreElementSelectedFont.slice(anchoreElementSelectedFont.indexOf('"')+1, anchoreElementSelectedFont.indexOf('"',anchoreElementSelectedFont.indexOf('"')+1));
                 anchoreElementSelectedFont = updatedFont;
+            }
+            else if(anchoreElementSelectedFont.indexOf(',')) {
+                anchoreElementSelectedFont = anchoreElementSelectedFont.slice(0, anchoreElementSelectedFont.indexOf(','));
             }
             this.replaceFontSizeInWrapper(anchoreElementSelectedFont);
         }
