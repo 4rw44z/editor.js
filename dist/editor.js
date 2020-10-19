@@ -14730,6 +14730,11 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         if (anchoredElementFontSize === focusedElementFontSize) {
           anchoredElementFontSize = anchoredElementFontSize.slice(0, anchoredElementFontSize.indexOf('p'));
+
+          if (anchoredElementFontSize.indexOf('.')) {
+            anchoredElementFontSize = anchoredElementFontSize.slice(0, anchoredElementFontSize.indexOf('.'));
+          }
+
           this.replaceFontSizeInWrapper(anchoredElementFontSize);
         } else {
           var emptyWrapper = '&nbsp;&nbsp';
@@ -14995,7 +15000,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       value: function addFontFamilyOptions() {
         var _this = this;
 
-        var values = ['Arial', 'Arial Black', 'Arial Narrow', 'Arial Rounded MT Bold', 'Avant Garde', 'Baskerville', 'Bodoni MT', 'Book Antiqua', 'Big Caslon', 'Calibri', 'Calisto MT', 'Cambria', 'Candara', 'Century Gothic', 'Charcoal', 'Copperplate', 'Comic Sans MS', 'Courier New', 'Didot', 'Franklin Gothic Medium', 'Futura', 'Geneva', 'Gill Sans', 'Garamond', 'Georgia', 'Goudy Old Style', 'Hoefler Text', 'Helvetica', 'Helvetica Neue', 'Impact', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Bright', 'Monaco', 'Optima', 'Papyrus', 'PT Mono', 'Palatino', 'Perpetua', 'Rockwell', 'Roboto', 'Rockwell Extra Bold', 'Segoe UI', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana'];
+        var values = ['Arial', 'Arial Black', 'Arial Narrow', 'Arial Rounded MT Bold', 'Avant Garde', 'Baskerville', 'Bodoni MT', 'Book Antiqua', 'Big Caslon', 'Calibri', 'Calisto MT', 'Cambria', 'Candara', 'Century Gothic', 'Charcoal', 'Copperplate', 'Comic Sans MS', 'Courier New', 'Didot', 'Franklin Gothic Medium', 'Futura', 'Geneva', 'Gill Sans', 'Garamond', 'Georgia', 'Goudy Old Style', 'Hoefler Text', 'Helvetica', 'Helvetica Neue', 'Impact', 'Lucida Sans Unicode', 'Lato', 'Lucida Grande', 'Lucida Bright', 'Monaco', 'Optima', 'Papyrus', 'PT Mono', 'Palatino', 'Perpetua', 'Rockwell', 'Roboto', 'Rockwell Extra Bold', 'Segoe UI', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana'];
         this.selectionList = document.createElement('div');
         this.selectionList.setAttribute('class', 'selectionList');
         var selectionListWrapper = document.createElement('div');
@@ -15094,6 +15099,8 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
           } else if (anchoreElementSelectedFont.slice(0, 1) === '-') {
             var updatedFont = anchoreElementSelectedFont.slice(anchoreElementSelectedFont.indexOf('"') + 1, anchoreElementSelectedFont.indexOf('"', anchoreElementSelectedFont.indexOf('"') + 1));
             anchoreElementSelectedFont = updatedFont;
+          } else if (anchoreElementSelectedFont.indexOf(',')) {
+            anchoreElementSelectedFont = anchoreElementSelectedFont.slice(0, anchoreElementSelectedFont.indexOf(','));
           }
 
           this.replaceFontSizeInWrapper(anchoreElementSelectedFont);

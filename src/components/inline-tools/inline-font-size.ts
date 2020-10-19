@@ -129,6 +129,9 @@ export default class FontSizeInlineTool implements InlineTool {
         const focusedElementFontSize = window.getComputedStyle(selection.focusNode.parentElement, null).getPropertyValue('font-size');
         if(anchoredElementFontSize === focusedElementFontSize) {
             anchoredElementFontSize = anchoredElementFontSize.slice(0, anchoredElementFontSize.indexOf('p'));
+            if(anchoredElementFontSize.indexOf('.')) {
+                anchoredElementFontSize =  anchoredElementFontSize.slice(0 ,anchoredElementFontSize.indexOf('.'));
+            }
             this.replaceFontSizeInWrapper(anchoredElementFontSize);
         }
         else {
