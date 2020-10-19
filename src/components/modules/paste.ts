@@ -662,8 +662,9 @@ export default class Paste extends Module {
 
     /** If there is no pattern substitute - insert string as it is */
     if (BlockManager.currentBlock && BlockManager.currentBlock.currentInput) {
-      // const currentToolSanitizeConfig = Sanitizer.getInlineToolsConfig(BlockManager.currentBlock.name);
-      const { tags } = Tools.blockTools[BlockManager.currentBlock.name].pasteConfig as PasteConfig;
+      const currentToolSanitizeConfig = Sanitizer.getInlineToolsConfig(BlockManager.currentBlock.name);
+      if(BlockManager.currentBlock.name !== 'linkTool') {
+        const { tags } = Tools.blockTools[BlockManager.currentBlock.name].pasteConfig as PasteConfig;
 
         const toolTags = tags.reduce((result, tag) => {
           result[tag.toLowerCase()] = {};
@@ -674,8 +675,15 @@ export default class Paste extends Module {
       document.execCommand(
         'insertHTML',
         false,
-        Sanitizer.clean(content.innerHTML, customConfig)
+        Sanitizer.clean(content.innerHTML,customConfig)
       );
+      } else {
+        document.execCommand(
+          'insertHTML',
+          false,
+          Sanitizer.clean(content.innerHTML,currentToolSanitizeConfig)
+        );
+      }
     } else {
       this.insertBlock(dataToInsert);
     }
