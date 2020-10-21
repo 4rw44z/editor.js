@@ -14730,8 +14730,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
         if (anchoredElementFontSize === focusedElementFontSize) {
           anchoredElementFontSize = anchoredElementFontSize.slice(0, anchoredElementFontSize.indexOf('p'));
+          console.log(anchoredElementFontSize.indexOf('.'));
+          var elementContainsDecimalValue = anchoredElementFontSize.indexOf('.');
 
-          if (anchoredElementFontSize.indexOf('.')) {
+          if (elementContainsDecimalValue !== -1) {
             anchoredElementFontSize = anchoredElementFontSize.slice(0, anchoredElementFontSize.indexOf('.'));
           }
 
