@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test of Table</title>
+
+    <style>
+
+        body, html {
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #editorjs {
+            width: 800px;
+            margin-top: 10px;
+        }
+
+    </style>
+  <link href="table-preview.css" rel="stylesheet">
+  <link href="demo.css" rel="stylesheet">
+  <script src="json-preview.js"></script>
+</head>
+<body>
+
+<div id="editorjs"></div>
+<div class="ce-example__button" id="saveButton">
+  Save
+</div>
+<div class="ce-example__output">
+  <pre class="ce-example__output-content" id="output"></pre>
+</div>
+<script src="editor.js"></script>
+<script src="header_bundle.js""></script><!-- Header -->
+  <script src="image_bundle.js"></script><!-- Image -->
+  <script src="delimiter_bundle.js"></script><!-- Delimiter -->
+  <script src="list_bundle.js"></script><!-- List -->
+  <script src="checklist_bundle.js"></script><!-- Checklist -->
+  <script src="quote_bundle.js"></script><!-- Quote -->
+  <script src="code_bundle.js"></script><!-- Code -->
+  <script src="embed_bundle.js"></script><!-- Embed -->
+  <script src="link_bundle.js"></script><!-- Link -->
+  <script src="raw_bundle.js"></script><!-- Raw -->
+  <script src="warning_bundle.js"></script><!-- Warning -->
+  <script src="marker_bundle.js"></script><!-- Marker -->
+  <script src="inline_code_bundle.js"></script><!-- Inline Code -->
+  <script src="simple_image_bundle.js"></script><!-- Simple_Image -->
+<script src="table_bundle.js"></script>
+<script>
+    const saveButton = document.getElementById('saveButton');
+    const editor = new EditorJS({
+      autofocus: true,
+      data: {
+        version: '2.18.0',
+      },
+      placeholder: 'Table tool test',
+      holder: 'editorjs',
+      tools: {
+        table: {
+          class: Table,
+          inlineToolbar: true,
+          config: {
+            rows: 0,
+            cols: 0
+          },
+          
+        },
+        header: {
+          class: Header,
+          inlineToolbar: ['link'],
+          config: {
+            placeholder: 'Header'
+          },
+          shortcut: 'CMD+SHIFT+H'
+        },
+        // image: {
+        //   class: ImageTool,
+        //   endpoint: {
+        //     byFile: 'http://localhost:8008/uploadFile',
+        //     byUrl: 'http://localhost:8008/fetchUrl'
+        //   }
+        // },
+        //   image: SimpleImage,
+      list: {
+        class: List,
+        inlineToolbar: true,
+        shortcut: 'CMD+SHIFT+L'
+      },
+
+    checklist: {
+      class: Checklist,
+      inlineToolbar: true,
+    },
+
+    quote: {
+      class: Quote,
+      inlineToolbar: true,
+      config: {
+        quotePlaceholder: 'Enter a quote',
+        captionPlaceholder: 'Quote\'s author',
+      },
+      shortcut: 'CMD+SHIFT+O'
+    },
+
+    warning: Warning,
+
+    marker: {
+      class:  Marker,
+      shortcut: 'CMD+SHIFT+M'
+    },
+
+    code: {
+      class:  CodeTool,
+      shortcut: 'CMD+SHIFT+C'
+    },
+
+    delimiter: Delimiter,
+
+    inlineCode: {
+      class: InlineCode,
+      shortcut: 'CMD+SHIFT+C'
+    },
+
+    linkTool: LinkTool,
+
+    raw: RawTool,
+
+    embed: Embed,
+
+      },
+      data : {
+        blocks: [
+        {
+            type : "paragraph",
+            data : {
+                text : "<span style=\"font-size:12pt;font-family:Lato,sans-serif;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">RECIPE</span><span style=\"font-size:32pt;font-family:'Playfair Display',serif;color:#f75d5d;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\"><br></span><span style=\"font-size:32pt;font-family:'Playfair Display',serif;color:#f75d5d;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">Strawberry Vanilla Pancakes</span>"
+            }
+        },
+        {
+            type : "paragraph",
+            data : {
+                text : "<span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">Ready in </span><span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">20 minutes</span>"
+            }
+        },
+        {
+            type : "paragraph",
+            data : {
+                text : "<span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">Serves </span><span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">8 people</span>"
+            }
+        },
+        {
+            type : "paragraph",
+            data : {
+                text : "<span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">280 calories</span><span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">&nbsp;</span>"
+            }
+        },
+        {
+            type : "header",
+            data : {
+                text : "<span style=\"font-size:16pt;font-family:'Playfair Display',serif;color:#f75d5d;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">Ingredients</span>",
+                level : 1
+            }
+        },
+        {
+            type : "list",
+            data : {
+                style : "unordered",
+                items : [
+                    "<span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">Lorem ipsum dolor sit amet</span>",
+                    "<span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">Consectetuer adipiscing elit</span>",
+                    "<span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">Suspendisse scelerisque</span>",
+                    "<span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">Libero interdum auctor</span>"
+                ]
+            }
+        },
+        {
+            type : "table",
+            data : {
+                content : [
+                    [
+                        "Test",
+                        "Kyoto",
+                        "Example",
+                        "Jest"
+                    ],
+                    [
+                        "Marco Polo",
+                        "Marques Aurilieas",
+                        "JEt lAf",
+                        "Tanzania"
+                    ]
+                ]
+            }
+        }
+        ]
+      },
+      onReady: function(){
+      saveButton.click();
+    }
+    })
+    saveButton.addEventListener('click', function () {
+    editor.save().then((savedData) => {
+      cPreview.show(savedData, document.getElementById("output"));
+    });
+  });
+</script>
+</body>
+</html>
