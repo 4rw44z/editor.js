@@ -50,6 +50,7 @@
   <script src="../../example/tools/marker/dist/bundle.js"></script><!-- Marker -->
   <script src="../../example/tools/inline-code/dist/bundle.js"></script><!-- Inline Code -->
   <script src="../../example/tools/image/dist/bundle.js"></script><!-- Image -->
+  <script src="../../example/tools/simple-image/dist/bundle.js"></script><!-- Image -->
 <script src="dist/bundle.js"></script>
 <script>
     const saveButton = document.getElementById('saveButton');
@@ -78,7 +79,14 @@
           },
           shortcut: 'CMD+SHIFT+H'
         },
-        image: ImageTool,
+        // image: {
+        //   class: ImageTool,
+        //   endpoint: {
+        //     byFile: 'http://localhost:8008/uploadFile',
+        //     byUrl: 'http://localhost:8008/fetchUrl'
+        //   }
+        // },
+          image: SimpleImage,
       list: {
         class: List,
         inlineToolbar: true,
@@ -170,7 +178,16 @@
                     "<span style=\"font-size:11pt;font-family:Lato,sans-serif;color:#666666;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;\">Libero interdum auctor</span>"
                 ]
             }
-        }
+        },
+        {
+            type: 'image',
+            data: {
+              url: '../../example/assets/codex2x.png',
+              stretched: false,
+              withBorder: true,
+              withBackground: false,
+            }
+          },
         ]
       },
       onReady: function(){
