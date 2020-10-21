@@ -12,7 +12,9 @@
     "editorjs"
   ],
   "scripts": {
-    "build": "rimraf dist/* && yarn svg && yarn build:prod",
+    "build": "rimraf dist/* && yarn svg && yarn build:prod && yarn build-tools:prod",
+    "cp": "cp example/assets/demo.css dist && cp example/assets/json-preview.js dist",
+    "build:demo": "yarn build && yarn cp",
     "build:win": "rimraf dist && yarn svg:win && yarn build:prod",
     "build:dev": "webpack --mode development --progress --display-error-details --display-entrypoints --watch",
     "build:prod": "webpack --mode production",
