@@ -3,8 +3,8 @@ const path = require('path');
 module.exports = {
   entry: './src/plugin.js',
   output: {
-    filename: 'bundle.js',
-    path: path.join(__dirname, 'dist'),
+    filename: 'table_bundle.js',
+    path: path.join(__dirname, '../../dist'),
     library: 'Table',
     libraryTarget: 'umd'
   },
