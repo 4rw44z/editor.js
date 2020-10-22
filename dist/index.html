@@ -78,13 +78,15 @@
           },
           shortcut: 'CMD+SHIFT+H'
         },
-        // image: {
-        //   class: ImageTool,
-        //   endpoint: {
-        //     byFile: 'http://localhost:8008/uploadFile',
-        //     byUrl: 'http://localhost:8008/fetchUrl'
-        //   }
-        // },
+        image: {
+          class: ImageTool,
+          config: {
+          endpoints: {
+           byFile: 'http://localhost:8008/uploadFile',
+           byUrl: 'http://localhost:8008/fetchUrl',
+          }
+        }
+        },
         //   image: SimpleImage,
       list: {
         class: List,
