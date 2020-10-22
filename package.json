@@ -19,7 +19,6 @@
     "build:dev": "webpack --mode development --progress --display-error-details --display-entrypoints --watch",
     "build:prod": "webpack --mode production",
     "build-tools:prod": "yarn build-table:prod && yarn build-list:prod && yarn build-checklist:prod && yarn build-code:prod && yarn build-delimiter:prod && yarn build-embed:prod && yarn build-header:prod && yarn build-image:prod && yarn build-inline-code:prod && yarn build-link:prod && yarn build-marker:prod && yarn build-quote:prod && yarn build-raw:prod && yarn build-simple-image:prod && yarn build-warning:prod",
-    "build-tools:dev": "yarn build-table:dev && yarn build-list:dev ",
     "build-table:prod": "cd additionalComponents/table && yarn build",
     "build-table:dev": "cd additionalComponents/table && yarn build:dev",
     "build-list:prod": "cd additionalComponents/list && yarn build",
