@@ -157,7 +157,12 @@ class Table {
    */
   render() {
     this.wrapper = document.createElement('div');
-    // Table preview
+    
+    if(this.data && this.data.content){
+      //Creates table if Data is Present
+      this._createTableConfigration();
+    } else {
+      // Create table preview if New table is initialised
     this.wrapper.classList.add('table-selector');
     this.wrapper.setAttribute('data-hoveredClass', 'm,n');
     const rows = 6;
@@ -185,7 +190,9 @@ class Table {
         this.config.cols = selectedColumn;
         this._createTableConfigration();
       }
-    })
+    });
+    }
+    
     return this.wrapper;
 
   }

@@ -41,11 +41,12 @@ export default class Saver extends Module {
     });
 
     const extractedData = await Promise.all(chainData);
-    const sanitizedData = await Sanitizer.sanitizeBlocks(extractedData);
+    // console.log(extractedData);
+    // const sanitizedData = await Sanitizer.sanitizeBlocks(extractedData);
 
     ModificationsObserver.enable();
 
-    return this.makeOutput(sanitizedData);
+    return this.makeOutput(extractedData);
   }
 
   /**
