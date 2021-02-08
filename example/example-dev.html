@@ -65,7 +65,7 @@
   <script src="./tools/link/dist/bundle.js"></script><!-- Link -->
   <script src="./tools/raw/dist/bundle.js"></script><!-- Raw -->
   <script src="./tools/warning/dist/bundle.js"></script><!-- Warning -->
-
+  <script src="../dist/image_bundle.js">
   <script src="./tools/marker/dist/bundle.js"></script><!-- Marker -->
   <script src="./tools/inline-code/dist/bundle.js"></script><!-- Inline Code -->
 
@@ -108,7 +108,15 @@
         /**
          * Or pass class directly without any configuration
          */
-        image: SimpleImage,
+        image: {
+          class: ImageTool,
+          config: {
+          endpoints: {
+           byFile: 'http://localhost:8008/uploadFile',
+           byUrl: 'http://localhost:8008/fetchUrl',
+          }
+        }
+      },
 
         list: {
           class: List,
@@ -133,10 +141,10 @@
 
         warning: Warning,
 
-        marker: {
-          class:  Marker,
-          shortcut: 'CMD+SHIFT+M'
-        },
+        // marker: {
+        //   class:  Marker,
+        //   shortcut: 'CMD+SHIFT+M'
+        // },
 
         code: {
           class:  CodeTool,

@@ -3,7 +3,7 @@
   "description": "Table for Editor.js",
   "version": "1.3.0",
   "license": "MIT",
-  "main": "./dist/bundle.js",
+  "main": "../../dist/table_bundle.js",
   "scripts": {
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development --watch",

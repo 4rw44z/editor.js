@@ -22,9 +22,9 @@
         }
 
     </style>
-  <link href="src/styles/table-preview.css" rel="stylesheet" />
-  <link href="../../example/assets/demo.css" rel="stylesheet">
-  <script src="../../example/assets/json-preview.js"></script>
+  <link href="table-preview.css" rel="stylesheet">
+  <link href="demo.css" rel="stylesheet">
+  <script src="json-preview.js"></script>
 </head>
 <body>
 
@@ -35,23 +35,22 @@
 <div class="ce-example__output">
   <pre class="ce-example__output-content" id="output"></pre>
 </div>
-<script src="../../dist/editor.js"></script>
-<script src="../../example/tools/header/dist/bundle.js"></script><!-- Header -->
-  <script src="../../example/tools/image/dist/bundle.js"></script><!-- Image -->
-  <script src="../../example/tools/delimiter/dist/bundle.js"></script><!-- Delimiter -->
-  <script src="../list/dist/bundle.js"></script><!-- List -->
-  <script src="../../example/tools/checklist/dist/bundle.js"></script><!-- Checklist -->
-  <script src="../../example/tools/quote/dist/bundle.js"></script><!-- Quote -->
-  <script src="../../example/tools/code/dist/bundle.js"></script><!-- Code -->
-  <script src="../../example/tools/embed/dist/bundle.js"></script><!-- Embed -->
-  <script src="../../example/tools/link/dist/bundle.js"></script><!-- Link -->
-  <script src="../../example/tools/raw/dist/bundle.js"></script><!-- Raw -->
-  <script src="../../example/tools/warning/dist/bundle.js"></script><!-- Warning -->
-  <script src="../../example/tools/marker/dist/bundle.js"></script><!-- Marker -->
-  <script src="../../example/tools/inline-code/dist/bundle.js"></script><!-- Inline Code -->
-  <script src="../../example/tools/image/dist/bundle.js"></script><!-- Image -->
-  <script src="../../example/tools/simple-image/dist/bundle.js"></script><!-- Image -->
-<script src="dist/bundle.js"></script>
+<script src="editor.js"></script>
+<script src="header_bundle.js""></script><!-- Header -->
+  <script src="image_bundle.js"></script><!-- Image -->
+  <script src="delimiter_bundle.js"></script><!-- Delimiter -->
+  <script src="list_bundle.js"></script><!-- List -->
+  <script src="checklist_bundle.js"></script><!-- Checklist -->
+  <script src="quote_bundle.js"></script><!-- Quote -->
+  <script src="code_bundle.js"></script><!-- Code -->
+  <script src="embed_bundle.js"></script><!-- Embed -->
+  <script src="link_bundle.js"></script><!-- Link -->
+  <script src="raw_bundle.js"></script><!-- Raw -->
+  <script src="warning_bundle.js"></script><!-- Warning -->
+  <script src="marker_bundle.js"></script><!-- Marker -->
+  <script src="inline_code_bundle.js"></script><!-- Inline Code -->
+  <script src="simple_image_bundle.js"></script><!-- Simple_Image -->
+<script src="table_bundle.js"></script>
 <script>
     const saveButton = document.getElementById('saveButton');
     const editor = new EditorJS({
@@ -79,14 +78,16 @@
           },
           shortcut: 'CMD+SHIFT+H'
         },
-        // image: {
-        //   class: ImageTool,
-        //   endpoint: {
-        //     byFile: 'http://localhost:8008/uploadFile',
-        //     byUrl: 'http://localhost:8008/fetchUrl'
-        //   }
-        // },
-          image: SimpleImage,
+        image: {
+          class: ImageTool,
+          config: {
+          endpoints: {
+           byFile: 'http://localhost:8008/uploadFile',
+           byUrl: 'http://localhost:8008/fetchUrl',
+          }
+        }
+        },
+        //   image: SimpleImage,
       list: {
         class: List,
         inlineToolbar: true,
@@ -180,14 +181,24 @@
             }
         },
         {
-            type: 'image',
-            data: {
-              url: '../../example/assets/codex2x.png',
-              stretched: false,
-              withBorder: true,
-              withBackground: false,
+            type : "table",
+            data : {
+                content : [
+                    [
+                        "Test",
+                        "Kyoto",
+                        "Example",
+                        "Jest"
+                    ],
+                    [
+                        "Marco Polo",
+                        "Marques Aurilieas",
+                        "JEt lAf",
+                        "Tanzania"
+                    ]
+                ]
             }
-          },
+        }
         ]
       },
       onReady: function(){

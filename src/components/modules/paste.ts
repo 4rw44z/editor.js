@@ -201,7 +201,7 @@ export default class Paste extends Module {
       return result;
     }, {});
 
-    const customConfig = Object.assign({}, toolsTags, Sanitizer.getAllInlineToolsConfig(), { br: {} });
+    const customConfig = Object.assign({}, toolsTags, Sanitizer.getAllInlineToolsConfig(), { br: {}, span: { style: true}});
 
     const cleanData = Sanitizer.clean(htmlData, customConfig);
 
@@ -550,7 +550,7 @@ export default class Paste extends Module {
 
           return result;
         }, {});
-        const customConfig = Object.assign({}, toolTags, Sanitizer.getInlineToolsConfig(tool));
+        const customConfig = Object.assign({}, toolTags, Sanitizer.getInlineToolsConfig(tool), { br: {}, span: { style: true}});
 
         content.innerHTML = Sanitizer.clean(content.innerHTML, customConfig);
 
@@ -663,12 +663,27 @@ export default class Paste extends Module {
     /** If there is no pattern substitute - insert string as it is */
     if (BlockManager.currentBlock && BlockManager.currentBlock.currentInput) {
       const currentToolSanitizeConfig = Sanitizer.getInlineToolsConfig(BlockManager.currentBlock.name);
+      if(BlockManager.currentBlock.name !== 'linkTool') {
+        const { tags } = Tools.blockTools[BlockManager.currentBlock.name].pasteConfig as PasteConfig;
 
+        const toolTags = tags.reduce((result, tag) => {
+          result[tag.toLowerCase()] = {};
+
+          return result;
+        }, {});
+        const customConfig = Object.assign({}, toolTags, Sanitizer.getInlineToolsConfig(BlockManager.currentBlock.name), { br: {}, span: { style: true}});
       document.execCommand(
         'insertHTML',
         false,
-        Sanitizer.clean(content.innerHTML, currentToolSanitizeConfig)
+        Sanitizer.clean(content.innerHTML,customConfig)
       );
+      } else {
+        document.execCommand(
+          'insertHTML',
+          false,
+          Sanitizer.clean(content.innerHTML,currentToolSanitizeConfig)
+        );
+      }
     } else {
       this.insertBlock(dataToInsert);
     }

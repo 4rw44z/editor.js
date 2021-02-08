@@ -21299,7 +21299,10 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                     return result;
                   }, {});
                   customConfig = Object.assign({}, toolsTags, Sanitizer.getAllInlineToolsConfig(), {
-                    br: {}
+                    br: {},
+                    span: {
+                      style: true
+                    }
                   });
                   cleanData = Sanitizer.clean(htmlData, customConfig);
                   /** If there is no HTML or HTML string is equal to plain one, process it as plain text */
@@ -21745,7 +21748,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
             result[tag.toLowerCase()] = {};
             return result;
           }, {});
-          var customConfig = Object.assign({}, toolTags, Sanitizer.getInlineToolsConfig(tool));
+          var customConfig = Object.assign({}, toolTags, Sanitizer.getInlineToolsConfig(tool), {
+            br: {},
+            span: {
+              style: true
+            }
+          });
           content.innerHTML = Sanitizer.clean(content.innerHTML, customConfig);
 
           var event = _this6.composePasteEvent('tag', {
@@ -21861,7 +21869,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
       key: "processInlinePaste",
       value: function () {
         var _processInlinePaste = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(dataToInsert) {
-          var _this$Editor6, BlockManager, Caret, Sanitizer, Tools, content, currentBlockIsInitial, blockData, needToReplaceCurrentBlock, insertedBlock, currentToolSanitizeConfig;
+          var _this$Editor6, BlockManager, Caret, Sanitizer, Tools, content, currentBlockIsInitial, blockData, needToReplaceCurrentBlock, insertedBlock, currentToolSanitizeConfig, tags, toolTags, customConfig;
 
           return _regenerator["default"].wrap(function _callee9$(_context9) {
             while (1) {
@@ -21896,7 +21904,23 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
                   /** If there is no pattern substitute - insert string as it is */
                   if (BlockManager.currentBlock && BlockManager.currentBlock.currentInput) {
                     currentToolSanitizeConfig = Sanitizer.getInlineToolsConfig(BlockManager.currentBlock.name);
-                    document.execCommand('insertHTML', false, Sanitizer.clean(content.innerHTML, currentToolSanitizeConfig));
+
+                    if (BlockManager.currentBlock.name !== 'linkTool') {
+                      tags = Tools.blockTools[BlockManager.currentBlock.name].pasteConfig.tags;
+                      toolTags = tags.reduce(function (result, tag) {
+                        result[tag.toLowerCase()] = {};
+                        return result;
+                      }, {});
+                      customConfig = Object.assign({}, toolTags, Sanitizer.getInlineToolsConfig(BlockManager.currentBlock.name), {
+                        br: {},
+                        span: {
+                          style: true
+                        }
+                      });
+                      document.execCommand('insertHTML', false, Sanitizer.clean(content.innerHTML, customConfig));
+                    } else {
+                      document.execCommand('insertHTML', false, Sanitizer.clean(content.innerHTML, currentToolSanitizeConfig));
+                    }
                   } else {
                     this.insertBlock(dataToInsert);
                   }
@@ -23419,7 +23443,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
         var _save = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
           var _this = this;
 
-          var _this$Editor, BlockManager, Sanitizer, ModificationsObserver, blocks, chainData, extractedData, sanitizedData;
+          var _this$Editor, BlockManager, Sanitizer, ModificationsObserver, blocks, chainData, extractedData;
 
           return _regenerator["default"].wrap(function _callee$(_context) {
             while (1) {
@@ -23440,15 +23464,12 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
                 case 6:
                   extractedData = _context.sent;
-                  _context.next = 9;
-                  return Sanitizer.sanitizeBlocks(extractedData);
+                  // console.log(extractedData);
+                  // const sanitizedData = await Sanitizer.sanitizeBlocks(extractedData);
+                  ModificationsObserver.enable();
+                  return _context.abrupt("return", this.makeOutput(extractedData));
 
                 case 9:
-                  sanitizedData = _context.sent;
-                  ModificationsObserver.enable();
-                  return _context.abrupt("return", this.makeOutput(sanitizedData));
-
-                case 12:
                 case "end":
                   return _context.stop();
               }

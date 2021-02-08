@@ -11,7 +11,6 @@ module.exports = (env, argv) => {
   const TerserPlugin = require('terser-webpack-plugin');
   const { LicenseWebpackPlugin } = require('license-webpack-plugin');
   const pkg = require('./package.json');
-
   /**
    * Environment
    *
@@ -62,7 +61,7 @@ module.exports = (env, argv) => {
         banner: `Editor.js\n\n@version ${VERSION}\n\n@licence Apache-2.0\n@author CodeX <https://codex.so>\n\n@uses html-janitor\n@licence Apache-2.0 (https://github.com/guardian/html-janitor/blob/master/LICENSE)`,
       }),
 
-      new LicenseWebpackPlugin(),
+      new LicenseWebpackPlugin()
     ],
 
     module: {
