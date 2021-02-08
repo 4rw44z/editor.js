@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test of Table</title>
+
+    <style>
+
+        body, html {
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #editorjs {
+            width: 800px;
+            margin-top: 10px;
+        }
+
+    </style>
+  <link href="../editor.js/additionalComponents/table/src/styles/table-preview.css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="editorjs"></div>
+<script src="../editor.js/dist/editor.js"></script>
+<script src="../editor.js/example/tools/header/dist/bundle.js"></script><!-- Header -->
+  <script src="../editor.js/example/tools/image/dist/bundle.js"></script><!-- Image -->
+  <script src="../editor.js/example/tools/delimiter/dist/bundle.js"></script><!-- Delimiter -->
+  <script src="../editor.js/additionalComponents/list/dist/bundle.js"></script><!-- List -->
+  <script src="../editor.js/example/tools/checklist/dist/bundle.js"></script><!-- Checklist -->
+  <script src="../editor.js/example/tools/quote/dist/bundle.js"></script><!-- Quote -->
+  <script src="../editor.js/example/tools/code/dist/bundle.js"></script><!-- Code -->
+  <script src="../editor.js/example/tools/embed/dist/bundle.js"></script><!-- Embed -->
+  <script src="../editor.js/example/tools/link/dist/bundle.js"></script><!-- Link -->
+  <script src="../editor.js/example/tools/raw/dist/bundle.js"></script><!-- Raw -->
+  <script src="../editor.js/example/tools/warning/dist/bundle.js"></script><!-- Warning -->
+  <script src="../editor.js/example/tools/marker/dist/bundle.js"></script><!-- Marker -->
+  <script src="../editor.js/example/tools/inline-code/dist/bundle.js"></script><!-- Inline Code -->
+<script src="../editor.js/additionalComponents/table/dist/bundle.js"></script>
+<script>
+    const editor = new EditorJS({
+      autofocus: true,
+      data: {
+        version: '2.18.0',
+      },
+      placeholder: 'Editor JS',
+      holder: 'editorjs',
+      tools: {
+        table: {
+          class: Table,
+          inlineToolbar: true,
+          config: {
+            rows: 0,
+            cols: 0
+          },
+          
+        },
+        header: {
+          class: Header,
+          inlineToolbar: ['link'],
+          config: {
+            placeholder: 'Header'
+          },
+          shortcut: 'CMD+SHIFT+H'
+        },
+      list: {
+        class: List,
+        inlineToolbar: true,
+        shortcut: 'CMD+SHIFT+L'
+      },
+
+    checklist: {
+      class: Checklist,
+      inlineToolbar: true,
+    },
+
+    quote: {
+      class: Quote,
+      inlineToolbar: true,
+      config: {
+        quotePlaceholder: 'Enter a quote',
+        captionPlaceholder: 'Quote\'s author',
+      },
+      shortcut: 'CMD+SHIFT+O'
+    },
+
+    warning: Warning,
+
+    marker: {
+      class:  Marker,
+      shortcut: 'CMD+SHIFT+M'
+    },
+
+    code: {
+      class:  CodeTool,
+      shortcut: 'CMD+SHIFT+C'
+    },
+
+    delimiter: Delimiter,
+
+    inlineCode: {
+      class: InlineCode,
+      shortcut: 'CMD+SHIFT+C'
+    },
+
+    linkTool: LinkTool,
+
+    raw: RawTool,
+
+    embed: Embed,
+
+      }
+    })
+</script>
+</body>
+</html>

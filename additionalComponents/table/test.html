@@ -23,11 +23,19 @@
 
     </style>
   <link href="src/styles/table-preview.css" rel="stylesheet" />
+  <link href="../../example/assets/demo.css" rel="stylesheet">
+  <script src="../../example/assets/json-preview.js"></script>
 </head>
 <body>
 
 <div id="editorjs"></div>
-<script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+<div class="ce-example__button" id="saveButton">
+  Save
+</div>
+<div class="ce-example__output">
+  <pre class="ce-example__output-content" id="output"></pre>
+</div>
+<script src="../../dist/editor.js"></script>
 <script src="../../example/tools/header/dist/bundle.js"></script><!-- Header -->
   <script src="../../example/tools/image/dist/bundle.js"></script><!-- Image -->
   <script src="../../example/tools/delimiter/dist/bundle.js"></script><!-- Delimiter -->
@@ -41,8 +49,10 @@
   <script src="../../example/tools/warning/dist/bundle.js"></script><!-- Warning -->
   <script src="../../example/tools/marker/dist/bundle.js"></script><!-- Marker -->
   <script src="../../example/tools/inline-code/dist/bundle.js"></script><!-- Inline Code -->
+  <script src="../../example/tools/image/dist/bundle.js"></script><!-- Image -->
 <script src="dist/bundle.js"></script>
 <script>
+    const saveButton = document.getElementById('saveButton');
     const editor = new EditorJS({
       autofocus: true,
       data: {
@@ -68,6 +78,7 @@
           },
           shortcut: 'CMD+SHIFT+H'
         },
+        image: ImageTool,
       list: {
         class: List,
         inlineToolbar: true,
@@ -114,8 +125,16 @@
 
     embed: Embed,
 
-      }
+      },
+      onReady: function(){
+      saveButton.click();
+    }
     })
+    saveButton.addEventListener('click', function () {
+    editor.save().then((savedData) => {
+      cPreview.show(savedData, document.getElementById("output"));
+    });
+  });
 </script>
 </body>
 </html>
